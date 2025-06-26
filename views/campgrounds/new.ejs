@@ -1,0 +1,534 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/new.css" />
+<div class="container mt-5">
+    <div class="form-container mt-5">
+        <div class="form-header">
+            <h1><i class="bi bi-flower1"></i> Farmers Market</h1>
+            <p class="lead mb-0">Vendor Registration Form</p>
+        </div>
+
+        <div class="form-body">
+            <!-- <form id="vendorForm" class="needs-validation" novalidate> -->
+            <form
+                id="vendorForm"
+                class="validated-form"
+                action="/campgrounds"
+                method="POST"
+                novalidate
+                enctype="multipart/form-data"
+            >
+                <!-- Business Information Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-shop"></i> Business Information
+                    </h3>
+
+                    <div class="row g-3">
+                        <!-- title -->
+                        <div class="col-md-6">
+                            <label for="title" class="form-label"
+                                >Market Name
+                                <span class="badge-required"
+                                    >Required</span
+                                ></label
+                            >
+                            <input
+                                class="form-control has-validation"
+                                type="text"
+                                id="title"
+                                name="campground[title]"
+                                required
+                            />
+                            <div class="valid-feedback">Looks Good!</div>
+                            <div class="invalid-feedback">
+                                Please enter valid entry.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="category" class="form-label"
+                                >Market Category
+                                <span class="badge-required"
+                                    >Required</span
+                                ></label
+                            >
+                            <select class="form-select" id="category" required>
+                                <option value="" selected disabled>
+                                    Choose a category
+                                </option>
+                                <option value="produce">Fresh Produce</option>
+                                <option value="dairy">Dairy & Eggs</option>
+                                <option value="bakery">Baked Goods</option>
+                                <option value="meat">Meat & Poultry</option>
+                                <option value="prepared">Prepared Foods</option>
+                                <option value="crafts">
+                                    Crafts & Artisanal Products
+                                </option>
+                                <option value="plants">Plants & Flowers</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a product category.
+                            </div>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="col-md-6">
+                            <label for="location" class="form-label"
+                                >Market Location
+                                <span class="badge-required"
+                                    >Required</span
+                                ></label
+                            >
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="bi bi-geo-alt"></i
+                                ></span>
+                                <input
+                                    class="form-control has-validation"
+                                    type="text"
+                                    id="location"
+                                    name="campground[location]"
+                                    placeholder="City, State"
+                                    required
+                                />
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide your business location.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="website" class="form-label"
+                                >Website/Social Media</label
+                            >
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="bi bi-globe"></i
+                                ></span>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="website"
+                                    placeholder="https://"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- description -->
+                        <div class="col-12">
+                            <label for="description" class="form-label"
+                                >Market Description
+                                <span class="badge-required"
+                                    >Required</span
+                                ></label
+                            >
+                            <textarea
+                                class="form-control has-validation"
+                                type="text"
+                                id="description"
+                                name="campground[description]"
+                                rows="3"
+                                placeholder="Tell us about your market..."
+                                required
+                            ></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a description of your products.
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-12">
+                            <label class="form-label"
+                                >Upload Product Images</label
+                            >
+                            <div class="file-upload">
+                                <div class="file-upload-btn">
+                                    <i class="bi bi-camera"></i> Choose Images
+                                </div>
+                                <input
+                                    type="file"
+                                    class="form-control"
+                                    id="productImages"
+                                    accept="image/*"
+                                    multiple
+                                    style="display: none"
+                                />
+                            </div>
+                            <div class="form-text">
+                                Maximum 3 images, each under 5MB.
+                            </div>
+                        </div> -->
+                        <!-- Image Upload - File input instead of URL -->
+                        <div class="col-12">
+                            <label class="form-label" for="image"
+                                >Market Images<span class="badge-required"
+                                    >Required</span
+                                ></label
+                            >
+                            <div class="input-group market-file-input">
+                                <span
+                                    class="input-group-text market-input-icon"
+                                >
+                                    <i class="bi bi-image-fill"></i>
+                                </span>
+                                <input
+                                    class="form-control"
+                                    type="file"
+                                    id="image"
+                                    name="image"
+                                    multiple
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="col-12">
+                            <label class="form-label" for="price"
+                                >Market Price (/day)<span class="badge-required"
+                                    >Required</span
+                                ></label
+                            >
+                            <div class="input-group">
+                                <span
+                                    class="input-group-text market-input-icon border-end-0"
+                                >
+                                    <i class="bi bi-currency-dollar"></i>
+                                </span>
+                                <input
+                                    id="price"
+                                    type="text"
+                                    class="form-control has-validation"
+                                    placeholder="0.00"
+                                    aria-label="Price"
+                                    aria-describedby="price-label"
+                                    name="campground[price]"
+                                    oninput="updatePrice()"
+                                    required
+                                />
+                            </div>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                Please enter a valid price.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booth Selection Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-grid-3x3"></i> Booth Selection
+                    </h3>
+
+                    <div class="mb-4">
+                        <label
+                            class="form-label d-block"
+                            style="margin-bottom: 15px"
+                        >
+                            <h5 style="display: inline">
+                                Choose Booth Sizes Available
+                            </h5>
+
+                            <!-- <span class="badge-required">Required</span> -->
+                        </label>
+
+                        <div
+                            class="booth-option"
+                            onclick="toggleBooth('small')"
+                        >
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                id="boothSmall"
+                                value="small"
+                                oninput="updatePrice()"
+                                
+                            />
+                            <label class="form-check-label" for="boothSmall">
+                                <strong>Small Booth</strong> (10' x 10')
+                                <span class="booth-price">$25/day</span>
+                            </label>
+                            <div class="mt-2 text-muted">
+                                Perfect for vendors with limited inventory.
+                                Includes space only.
+                            </div>
+                        </div>
+
+                        <div
+                            class="booth-option"
+                            onclick="toggleBooth('medium')"
+                        >
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                id="boothMedium"
+                                value="medium"
+                                oninput="updatePrice()"
+                                
+                            />
+                            <label class="form-check-label" for="boothMedium">
+                                <strong>Medium Booth</strong> (10' x 15')
+                                <span class="booth-price">$35/day</span>
+                            </label>
+                            <div class="mt-2 text-muted">
+                                Our most popular option with additional display
+                                space.
+                            </div>
+                        </div>
+
+                        <div
+                            class="booth-option"
+                            onclick="toggleBooth('large')"
+                        >
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                id="boothLarge"
+                                value="large"
+                                oninput="updatePrice()"
+                                
+                            />
+                            <label class="form-check-label" for="boothLarge">
+                                <strong>Large Booth</strong> (10' x 20')
+                                <span class="booth-price">$45/day</span>
+                            </label>
+                            <div class="mt-2 text-muted">
+                                For vendors with extensive product lines or
+                                larger displays.
+                            </div>
+                        </div>
+
+                        <div class="invalid-feedback">
+                            Please select at least one booth size.
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="electricity"
+                                onchange="updatePrice()"
+                            />
+                            <label class="form-check-label" for="electricity">
+                                <strong>Electricity Access</strong> (+$10/day)
+                            </label>
+                        </div>
+                        <div class="form-text">
+                            Limited electrical outlets available. Bring your own
+                            extension cords.
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="mb-4">
+                        <label class="form-label" style="margin-bottom: 15px"
+                            ><h5 style="display: inline">
+                                Select Available Days
+                            </h5>
+                            <!-- <span class="badge-required">Required</span> -->
+                        </label>
+                        <div class="date-grid">
+                            <div class="date-card" onclick="toggleDate(this)">
+                                <div class="fw-bold">Monday</div>
+                                <div class="small">(less traffic)</div>
+                            </div>
+                            <div class="date-card" onclick="toggleDate(this)">
+                                <div class="fw-bold">Tuesday</div>
+                                <div class="small">(less traffic)</div>
+                            </div>
+                            <div class="date-card" onclick="toggleDate(this)">
+                                <div class="fw-bold">Wednesday</div>
+                                <div class="small">(less traffic)</div>
+                            </div>
+                            <div class="date-card" onclick="toggleDate(this)">
+                                <div class="fw-bold">Thursday</div>
+                                <div class="small">(less traffic)</div>
+                            </div>
+                            <div class="date-card" onclick="toggleDate(this)">
+                                <div class="fw-bold">Friday</div>
+                                <div class="small">(more traffic)</div>
+                            </div>
+                            <div class="date-card" onclick="toggleDate(this)">
+                                <div class="fw-bold">Saturday</div>
+                                <div class="small">(more traffic)</div>
+                            </div>
+                            <div class="date-card" onclick="toggleDate(this)">
+                                <div class="fw-bold">Sunday</div>
+                                <div class="small">(more traffic)</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="selectedDates" />
+                        <div class="invalid-feedback">
+                            Please select at least one date.
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="price-calculator">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <label
+                                    class="form-label"
+                                    style="margin-bottom: 15px"
+                                    ><h5 style="display: inline">
+                                        Stall Prices at your Market :
+                                    </h5>
+                                    <!-- <span class="badge-required">Required</span> -->
+                                </label>
+                                <div class="text-muted small">
+                                    Based on your selections
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <div id="totalPriceList"></div>
+                                <!-- 🆕 Changed from single price -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-person"></i> Contact Information
+                    </h3>
+
+                    <i>
+                        <p>
+                            The Vendore will be able to see your Registered
+                            Username and Email address. <br />
+                            (They may contact you via your registered email
+                            address.)
+                        </p>
+                    </i>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label"
+                                >Phone Number
+                                <span class="badge-required"
+                                    >Required</span
+                                ></label
+                            >
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="bi bi-telephone"></i
+                                ></span>
+                                <input
+                                    type="tel"
+                                    class="form-control"
+                                    id="phone"
+                                    required
+                                />
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid phone number.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="alternateContact" class="form-label"
+                                >Alternate Contact (Optional)</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="alternateContact"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agreement Section -->
+                <div class="form-section mb-0">
+                    <div class="form-check custom-checkbox mb-4">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="termsCheck"
+                            required
+                        />
+                        <label class="form-check-label" for="termsCheck">
+                            I agree to the
+                            <a
+                                href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target="#termsModal"
+                                >Terms and Conditions</a
+                            >
+                            and understand the market rules.
+                        </label>
+                        <div class="invalid-feedback">
+                            You must agree to the terms and conditions.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-submit w-100">
+                        Submit Market Registeration
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDate(el) {
+        el.classList.toggle("selected");
+
+        const selected = [];
+        document.querySelectorAll(".date-card.selected").forEach((card) => {
+            const day = card.querySelector(".fw-bold").textContent.trim();
+            selected.push(day);
+        });
+
+        document.getElementById("selectedDates").value = selected.join(",");
+    }
+</script>
+
+<script>
+    function updatePrice() {
+        const marketPriceInput = document.getElementById("price").value;
+        let marketPrice = parseFloat(marketPriceInput);
+        if (isNaN(marketPrice)) marketPrice = 0;
+
+        const electricityChecked =
+            document.getElementById("electricity").checked;
+        const electricityPrice = electricityChecked ? 10 : 0;
+
+        const booths = [
+            { id: "boothSmall", name: "Small Booth", price: 25 },
+            { id: "boothMedium", name: "Medium Booth", price: 35 },
+            { id: "boothLarge", name: "Large Booth", price: 45 },
+        ];
+
+        let outputHTML = "";
+
+        booths.forEach((booth) => {
+            const checkbox = document.getElementById(booth.id);
+            if (checkbox && checkbox.checked) {
+                const total = marketPrice + booth.price + electricityPrice;
+                outputHTML += `<div>${booth.name}: <strong>$${total.toFixed(
+                    2
+                )}/day</strong></div>`;
+            }
+        });
+
+        document.getElementById("totalPriceList").innerHTML =
+            outputHTML || "<em>No booth selected</em>";
+    }
+
+    // Bind events
+    window.addEventListener("DOMContentLoaded", updatePrice);
+
+    // Optional: watch all related inputs dynamically
+    document
+        .querySelectorAll('#price, #electricity, input[name="boothSize[]"]')
+        .forEach((elem) => {
+            elem.addEventListener("change", updatePrice);
+            elem.addEventListener("input", updatePrice);
+        });
+</script>

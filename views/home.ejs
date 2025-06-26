@@ -1,0 +1,131 @@
+<% layout('layouts/boilerplate') %>
+<!-- views/index.ejs -->
+
+
+
+    <header>
+        <!-- navbar -->
+        <!-- <nav class="navbar">
+            <ul class="links-container">
+                <li class="link-item"><a href="#explore-section">Explore</a></li>
+                <li class="link-item"><a href="#services">Blogs</a></li>
+                <li class="link-item">
+                    <a href="#hero-section">
+                    <img src="/img/logo.png" class="logo" alt="Logo">
+                    </a>
+                </li>
+                <li class="link-item"><a href="#Why-Us">Why Us?</a></li>
+                <li class="link-item"><a href="#booknow">Book Now</a></li>
+            </ul>
+        </nav> -->
+
+        <!-- hero section -->
+        <main class="hero-section" id="hero-section">
+            <!-- background -->
+            <div class="background">
+                <img src="/img/img1.png" class="background-image" alt="hero-section image">
+            
+                <!-- grid -->
+                <div class="grid-slider">
+                    <% for(let i=0; i<6; i++) { %>
+                        <div class="grid-item hide"></div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="glassmorphism-box">
+                <div class="hero-section-content" data-aos="fade-up">
+                    <h1 class="typewriter"></h1>
+                    <p class="hero-section-sub-heading"><%= heroSubheading %></p>
+                </div>
+            </div>
+            <!-- scroll down img -->
+            <img src="/img/down-arrow.png" class="scroll-down-icon" alt="scroll down indicator">
+        </main>
+        <br>
+    </header>
+
+    <!-- explorer section -->
+    <section class="explore-section" id="explore-section">
+        <div class="glassmorphism-box">
+            <h1 class="section-title" data-aos="fade-up"><%= exploreTitle %></h1>
+            <% exploreContent.forEach(paragraph => { %>
+                <p class="section-para" data-aos="fade-up"><%= paragraph %></p>
+            <% }) %>
+            <p class="section-para" data-aos="fade-up">
+                <a href="/explore">
+                    <button class="book-button">Explore India !</button>
+                </a>
+            </p>
+        </div>
+        
+        <!-- grid -->
+        <div class="tours-container">
+            <% tourImages.forEach(image => { %>
+                <div class="tour-card" data-aos="fade-up">
+                    <img src="/img/<%= image %>" class="tour-img" alt="tour-image">
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <!-- services section -->
+    <section class="services-section" id="services">
+        <div class="glassmorphism-box">
+            <h1 class="section-title" data-aos="fade-up"><%= blogsTitle %></h1>
+            <% blogsContent.forEach(paragraph => { %>
+                <p class="section-para" data-aos="fade-up"><%= paragraph %></p>
+            <% }) %>
+            <p class="section-para" data-aos="fade-up">
+                <a href="/blogs">
+                    <button class="book-button">Read Blogs !</button>
+                </a>
+                <br><br>
+                <a href="/rating">
+                    <button class="book-button">Rate Us !</button>
+                </a>
+            </p>
+        </div>
+
+        <div class="travel-grid" id="travel">
+            <% for(let i=0; i<travelImages.length; i++) { %>
+                <img src="/img/<%= travelImages[i] %>" data-aos="fade-up" alt="Travel Image <%= i+1 %>">
+            <% } %>
+        </div>
+        <br><br>
+
+        <section class="Why-Us" id="Why-Us"> <br><br><br><br>
+            <h1 class="section-title" data-aos="fade-up"><%= whyUsTitle %></h1>
+            <p class="section-para" data-aos="fade-up"><%= whyUsSubtitle %></p>
+        
+            <!-- services grid -->
+            <div class="serives-grid">
+                <% services.forEach(service => { %>
+                    <div class="service-card" data-aos="fade-up">
+                        <div class="circle"></div>
+                        <i class="<%= service.icon %> card-icon"></i>
+                        <p class="service-text"><%= service.text %></p>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+    </section>
+    
+    <!-- book section -->
+    <section class="book-section" id="booknow">
+        <div class="book-content" data-aos="fade-up">
+            <h1 class="book-now-title"><%= bookTitle %></h1>
+            <p class="book-now-text"><%= bookDescription %></p>
+            <a href="/login">
+                <button class="book-now">book now</button>
+            </a>
+        </div>
+        <img src="/img/book.png" data-aos="fade-up" class="book-now-img" alt="Book Now">
+    </section>
+    
+    
+
+    <!-- animate on scroll JS CDN -->
+    <!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
+
+    <!-- Local JS File(s) -->
+    <!-- <script src="/js/app.js"></script> -->

@@ -1,0 +1,156 @@
+<% layout('layouts/boilerplate') %>
+
+<!-- Main content with vertical centering -->
+<div class="container d-flex flex-column" style="min-height: 85vh">
+    <div class="row flex-grow-1 justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-5">
+            <!-- Farmers Market themed card -->
+            <div class="card border-0 shadow-lg login-card">
+                <!-- Card header with leaf pattern -->
+                <div
+                    class="card-header border-0 position-relative overflow-hidden market-header"
+                >
+                    <div class="position-relative z-2">
+                        <h1 class="text-center mb-0 fw-bold text-white">
+                            Welcome to Our Market
+                        </h1>
+                        <p class="text-center mb-0 text-white-50">
+                            Sign in to your account
+                        </p>
+                    </div>
+                    <!-- Decorative leaf pattern overlay -->
+                    <div class="leaf-pattern"></div>
+                </div>
+
+                <div class="card-body market-body">
+                    <form
+                        action="/login"
+                        method="POST"
+                        class="validated-form"
+                        novalidate
+                    >
+                        <!-- Username -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold" for="username"
+                                >Username</label
+                            >
+                            <div class="input-group input-group-lg">
+                                <span
+                                    class="input-group-text market-input-icon border-end-0"
+                                >
+                                    <i class="bi bi-person-fill"></i>
+                                </span>
+                                <input
+                                    class="form-control border-start-0 ps-0 market-input"
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    placeholder="Enter your username"
+                                    required
+                                />
+                            </div>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                Please enter a valid username.
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-4">
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
+                                <label
+                                    class="form-label fw-semibold"
+                                    for="password"
+                                    >Password</label
+                                >
+                                <a
+                                    href="/forgot-password"
+                                    class="text-decoration-none small market-link"
+                                    >Forgot password?</a
+                                >
+                            </div>
+                            <div class="input-group input-group-lg">
+                                <span
+                                    class="input-group-text market-input-icon border-end-0"
+                                >
+                                    <i class="bi bi-lock-fill"></i>
+                                </span>
+                                <input
+                                    class="form-control border-start-0 ps-0 market-input"
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Enter your password"
+                                    required
+                                />
+                            </div>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                Please enter a valid password.
+                            </div>
+                        </div>
+
+                        <!-- Remember me checkbox -->
+                        <div class="mb-4 form-check">
+                            <input
+                                type="checkbox"
+                                class="form-check-input market-checkbox"
+                                id="remember"
+                                name="remember"
+                            />
+                            <label class="form-check-label" for="remember"
+                                >Remember me</label
+                            >
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-lg market-btn">
+                                <span>Log In</span>
+                                <i class="bi bi-arrow-right-circle ms-2"></i>
+                            </button>
+                        </div>
+
+                        <!-- Registration link -->
+                        <div class="text-center mt-4">
+                            <p class="mb-0">
+                                Don't have an account?
+                                <a
+                                    href="/register"
+                                    class="text-decoration-none fw-bold market-link"
+                                    >Sign up</a
+                                >
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Alternate login section with farmers market decoration -->
+            <!-- <div class="text-center mt-4 position-relative">
+        <div class="divider">
+          <span class="divider-text">or continue with</span>
+        </div>
+        <div class="d-flex justify-content-center gap-3 mt-3">
+          <a href="/auth/google" class="btn market-social-btn">
+            <i class="bi bi-google"></i>
+          </a>
+          <a href="/auth/facebook" class="btn market-social-btn">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="/auth/twitter" class="btn market-social-btn">
+            <i class="bi bi-twitter-x"></i>
+          </a>
+        </div>
+      </div> -->
+        </div>
+    </div>
+
+    <!-- Add this CSS to your styles or in a style tag in the head -->
+
+    <!-- Make sure Bootstrap Icons are included in your layout -->
+    <!-- Add this to your head if not already present: -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> -->
+</div>

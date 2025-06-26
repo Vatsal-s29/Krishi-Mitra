@@ -1,0 +1,316 @@
+<% layout('layouts/boilerplate') %>
+
+<!-- Main content with vertical centering -->
+<div class="container d-flex flex-column min-vh-100 ">
+    <div class="row flex-grow-1 justify-content-center align-items-center py-5">
+        <div class="col-lg-6">
+            <!-- Farmers Market themed card -->
+            <div class="card border-0 shadow-lg register-card">
+                <!-- Card header with leaf pattern -->
+                <div
+                    class="card-header border-0 position-relative overflow-hidden p-4 market-header"
+                >
+                    <div class="position-relative z-2">
+                        <h1 class="text-center mb-0 fw-bold text-white">
+                            Join Our Market
+                        </h1>
+                        <p class="text-center mb-0 text-white-50">
+                            Create your account today
+                        </p>
+                    </div>
+                    <!-- Decorative leaf pattern overlay -->
+                    <div class="leaf-pattern"></div>
+                </div>
+
+                <div class="card-body p-4 market-body">
+                    <form
+                        action="/register"
+                        method="POST"
+                        class="validated-form"
+                        novalidate
+                    >
+                        <!-- Name fields - side by side -->
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label
+                                    class="form-label fw-semibold"
+                                    for="firstName"
+                                    >First Name</label
+                                >
+                                <div class="input-group">
+                                    <span
+                                        class="input-group-text market-input-icon border-end-0"
+                                    >
+                                        <i class="bi bi-person-fill"></i>
+                                    </span>
+                                    <input
+                                        class="form-control border-start-0 ps-0 market-input"
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        placeholder="Your first name"
+                                        required
+                                    />
+                                </div>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">
+                                    Please enter your first name.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label
+                                    class="form-label fw-semibold"
+                                    for="lastName"
+                                    >Last Name</label
+                                >
+                                <div class="input-group">
+                                    <span
+                                        class="input-group-text market-input-icon border-end-0"
+                                    >
+                                        <i class="bi bi-person-fill"></i>
+                                    </span>
+                                    <input
+                                        class="form-control border-start-0 ps-0 market-input"
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        placeholder="Your last name"
+                                        required
+                                    />
+                                </div>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback">
+                                    Please enter your last name.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="email"
+                                >Email Address</label
+                            >
+                            <div class="input-group">
+                                <span
+                                    class="input-group-text market-input-icon border-end-0"
+                                >
+                                    <i class="bi bi-envelope-fill"></i>
+                                </span>
+                                <input
+                                    class="form-control border-start-0 ps-0 market-input"
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="your.email@example.com"
+                                    required
+                                />
+                            </div>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="username"
+                                >Username</label
+                            >
+                            <div class="input-group">
+                                <span
+                                    class="input-group-text market-input-icon border-end-0"
+                                >
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                                <input
+                                    class="form-control border-start-0 ps-0 market-input"
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    placeholder="Choose a username"
+                                    required
+                                />
+                            </div>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                Please choose a username.
+                            </div>
+                            <div class="form-text market-form-text">
+                                Username must be 4-20 characters long.
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="password"
+                                >Password</label
+                            >
+                            <div class="input-group">
+                                <span
+                                    class="input-group-text market-input-icon border-end-0"
+                                >
+                                    <i class="bi bi-lock-fill"></i>
+                                </span>
+                                <input
+                                    class="form-control border-start-0 ps-0 market-input"
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Create a password"
+                                    required
+                                />
+                            </div>
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                Please create a password.
+                            </div>
+                            <div class="form-text market-form-text">
+                                Password must be at least 8 characters long.
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-3">
+                            <label
+                                class="form-label fw-semibold"
+                                for="confirmPassword"
+                                >Confirm Password</label
+                            >
+                            <div class="input-group">
+                                <span
+                                    class="input-group-text market-input-icon border-end-0"
+                                >
+                                    <i class="bi bi-shield-lock-fill"></i>
+                                </span>
+                                <input
+                                    class="form-control border-start-0 ps-0 market-input"
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    placeholder="Confirm your password"
+                                    required
+                                />
+                            </div>
+                            <div class="valid-feedback">Passwords match!</div>
+                            <div class="invalid-feedback">
+                                Passwords must match.
+                            </div>
+                        </div>
+
+                        <!-- User type selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold"
+                                >I am a:</label
+                            >
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input market-radio"
+                                        type="radio"
+                                        name="userType"
+                                        id="customer"
+                                        value="customer"
+                                        checked
+                                    />
+                                    <label
+                                        class="form-check-label"
+                                        for="customer"
+                                        >Customer</label
+                                    >
+                                </div>
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input market-radio"
+                                        type="radio"
+                                        name="userType"
+                                        id="vendor"
+                                        value="vendor"
+                                    />
+                                    <label class="form-check-label" for="vendor"
+                                        >Vendor</label
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms and conditions -->
+                        <div class="mb-4 form-check">
+                            <input
+                                type="checkbox"
+                                class="form-check-input market-checkbox"
+                                id="terms"
+                                name="terms"
+                                required
+                            />
+                            <label class="form-check-label" for="terms">
+                                I agree to the
+                                <a href="/terms" class="market-link"
+                                    >Terms of Service</a
+                                >
+                                and
+                                <a href="/privacy" class="market-link"
+                                    >Privacy Policy</a
+                                >
+                            </label>
+                            <div class="invalid-feedback">
+                                You must agree to our terms before registering.
+                            </div>
+                        </div>
+
+                        <!-- Newsletter opt-in -->
+                        <div class="mb-4 form-check">
+                            <input
+                                type="checkbox"
+                                class="form-check-input market-checkbox"
+                                id="newsletter"
+                                name="newsletter"
+                            />
+                            <label class="form-check-label" for="newsletter">
+                                Send me updates about local market events and
+                                seasonal produce
+                            </label>
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-lg market-btn">
+                                <span>Create Account</span>
+                                <i class="bi bi-basket-fill ms-2"></i>
+                            </button>
+                        </div>
+
+                        <!-- Login link -->
+                        <div class="text-center mt-4">
+                            <p class="mb-0">
+                                Already have an account?
+                                <a
+                                    href="/login"
+                                    class="text-decoration-none fw-bold market-link"
+                                    >Sign in</a
+                                >
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Alternate registration section -->
+            <div class="text-center mt-4 position-relative">
+                <div class="divider">
+                    <span class="divider-text">or register with</span>
+                </div>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <a href="/auth/google" class="btn market-social-btn">
+                        <i class="bi bi-google"></i>
+                    </a>
+                    <a href="/auth/facebook" class="btn market-social-btn">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="/auth/twitter" class="btn market-social-btn">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row">
+    <h1 class="text-center">New Campground</h1>
+    <div class="col-6 offset-3">
+        <form
+            class="validated-form"
+            action="/campgrounds"
+            method="POST"
+            novalidate
+            enctype="multipart/form-data"
+        >
+            <!--? This enctype="multipart/form-data" allows us to submit/upload files in or form which is not supported by the default 'urlencoded' one-->
+            <!-- title -->
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input
+                    class="form-control has-validation"
+                    type="text"
+                    id="title"
+                    name="campground[title]"
+                    required
+                />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Please enter valid entry.</div>
+            </div>
+            <!-- Location -->
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input
+                    class="form-control has-validation"
+                    type="text"
+                    id="location"
+                    name="campground[location]"
+                    required
+                />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Please enter valid entry.</div>
+            </div>
+            <!-- Image  -->
+            <div class="mb-3">
+                <label for="image" class="form-label" name="image" multiple
+                    >Upload Images</label
+                >
+                <input
+                    class="form-control"
+                    type="file"
+                    id="image"
+                    name="image"
+                    multiple
+                />
+            </div>
+            <!-- <div class="mb-3">
+                <label class="form-label" for="image">Image url</label>
+                <input
+                    class="form-control has-validation"
+                    type="text"
+                    id="image"
+                    name="campground[image]"
+                    required
+                />
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Please enter valid entry.</div>
+            </div> -->
+            <!-- price -->
+            <div class="mb-3">
+                <label class="form-label" for="price">Campground Price</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="price-label">$</span>
+                    <input
+                        id="price"
+                        type="text"
+                        class="form-control has-validation"
+                        placeholder="0.00"
+                        aria-label="Price"
+                        aria-describedby="price-label"
+                        name="campground[price]"
+                        required
+                    />
+                    <div class="invalid-feedback">
+                        Please enter a valid price.
+                    </div>
+                    <div class="valid-feedback">Looks Good!</div>
+                </div>
+            </div>
+
+            <!-- description -->
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea
+                    class="form-control has-validation"
+                    type="text"
+                    id="description"
+                    name="campground[description]"
+                    required
+                ></textarea>
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Please enter valid entry.</div>
+            </div>
+            <!-- Add Campground -->
+            <div class="mb-3">
+                <button class="btn btn-success">Add Campground</button>
+            </div>
+        </form>
+        <a href="/campgrounds">
+            <!-- absolute url -->
+            <button class="btn btn-primary">All Campgrounds</button>
+        </a>
+    </div>
+</div>
+
+<!--
+    note : since we have give name as campground[field_name]
+    When this form is submitted, the data in the request body (req.body) will look like this:
+    {
+        campground: {
+            title: "Name_submitted_in_form",
+            location: "Location_submitted_in_form"
+        }
+    }
+    ? Accessing Nested Data:
+    By writing req.body.campground, you are accessing the nested object that contains the title and location fields.
+
+    ? Usage in Code:
+    When you pass req.body.campground to the Mongoose model's constructor (new Campground()),
+    it initializes the document with the form data:
+
+    const cg = new Campground(req.body.campground); 
+    *Equivalent to: 
+    new Campground({ title: "Some Campground Title", location: "Some Location" });
+-->
+
+<!-- 
+    note : Validation message positions
+    Add has-validation Class to the input-group: This informs Bootstrap that the input-group contains validation elements.
+
+    By placing both valid-feedback and invalid-feedback inside the input-group,
+    you ensure that both messages are appropriately displayed based on the validation state.
+
+    The valid-feedback and invalid-feedback are now a sibling of the input element inside the input-group.
+    This ensures that Bootstrap applies it when the input is valid as well as when invalid.
+-->

@@ -1,0 +1,209 @@
+<% layout('layouts/boilerplate') %>
+<!-- ! if you want something to be linked to all the pages and not a specific type, we could just have included it to the boilerplate.js -->
+<link rel="stylesheet" href="/stylesheets/stars.css" />
+
+<div class="row">
+    <div class="col-6">
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+                <% campground.images.forEach((img,i) => { %>
+                <!-- making the active apply only on the first image -->
+                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                    <img
+                        class="d-block w-100"
+                        src="<%=img.url%>"
+                        alt=""
+                        style="aspect-ratio: 5 / 3.2"
+                    />
+                </div>
+                <% }); %>
+            </div>
+            <% if(campground.images.length > 1) {%>
+            <!-- left arrow mark -->
+            <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselExample"
+                data-bs-slide="prev"
+            >
+                <span
+                    class="carousel-control-prev-icon"
+                    aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <!-- right arrow mark -->
+            <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselExample"
+                data-bs-slide="next"
+            >
+                <span
+                    class="carousel-control-next-icon"
+                    aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <% } %>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%= campground.title %></h5>
+                <p class="card-text"><%= campground.description %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-secondary">
+                    <%= campground.location %>
+                </li>
+                <li class="list-group-item">
+                    submitted by - <%= campground.author.username %>
+                </li>
+                <li class="list-group-item">
+                    $<%= campground.price %> / night
+                </li>
+            </ul>
+            <div class="card-body">
+                <!-- note : This part will only be shown to the creater of the cg -->
+
+                <!-- currentUser exists (someone is logged in) and the currentUser is the same as campground author -->
+                <% if (currentUser && campground.author.equals(currentUser._id))
+                { %>
+                <a
+                    href="/campgrounds/<%=campground._id %>/edit"
+                    class="card-link btn btn-success"
+                    >Edit Campground</a
+                >
+                <form
+                    class="d-inline-block"
+                    action="/campgrounds/<%=campground._id %>?_method=DELETE"
+                    method="POST"
+                >
+                    <button class="btn btn-danger">Delete Campground</button>
+                </form>
+                <% } %>
+
+                <!-- note : end -->
+
+                <a href="/campgrounds" class="card-link btn btn-primary"
+                    >All Campgrounds</a
+                >
+            </div>
+            <div class="card-footer text-body-secondary">2 days ago</div>
+        </div>
+    </div>
+    <div class="col-6">
+        <% if(currentUser) {%>
+        <h3>Leave a Review</h3>
+        <form
+            action="/campgrounds/<%=campground._id %>/reviews"
+            class="mb-5 validated-form"
+            method="POST"
+            novalidate
+        >
+            <div class="mb-3">
+                <fieldset class="starability-coinFlip">
+                    <legend>Rate :</legend>
+                    <input
+                        type="radio"
+                        id="no-rate"
+                        class="input-no-rate"
+                        name="review[rating]"
+                        value="1"
+                        checked
+                        aria-label="No rating."
+                    />
+                    <input
+                        type="radio"
+                        id="first-rate1"
+                        name="review[rating]"
+                        value="1"
+                    />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input
+                        type="radio"
+                        id="first-rate2"
+                        name="review[rating]"
+                        value="2"
+                    />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input
+                        type="radio"
+                        id="first-rate3"
+                        name="review[rating]"
+                        value="3"
+                    />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input
+                        type="radio"
+                        id="first-rate4"
+                        name="review[rating]"
+                        value="4"
+                    />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input
+                        type="radio"
+                        id="first-rate5"
+                        name="review[rating]"
+                        value="5"
+                    />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+
+            <div class="mb-3">
+                <legend>
+                    <label class="form-label" for="body">Review :</label>
+                </legend>
+
+                <textarea
+                    class="form-control"
+                    name="review[body]"
+                    id="body"
+                    cols="1"
+                    rows="3"
+                    required
+                ></textarea>
+                <div class="valid-feedback">Looks Good!</div>
+                <div class="invalid-feedback">Please enter valid entry.</div>
+            </div>
+            <button class="btn btn-success" style="width: 100%">Submit</button>
+        </form>
+        <% } %> <%for(rev of campground.reviews) {%>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5
+                    class="starability-result mb-3"
+                    data-rating="<%=rev.rating%>"
+                >
+                    Rated: <%=rev.rating%> stars
+                </h5>
+
+                <h6 class="card-subtitle mb-2 text-muted">
+                    by - <%=rev.author.username %>
+                </h6>
+                <p class="card-text">Review : <%=rev.body %></p>
+                <% if (currentUser && rev.author.equals(currentUser._id)) { %>
+                <form
+                    action="/campgrounds/<%=campground._id %>/reviews/<%=rev._id %>?_method=DELETE"
+                    method="POST"
+                >
+                    <button class="btn btn-sm btn-danger">Delete :|</button>
+                </form>
+                <% } %>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- 
+    note : comment1
+    whenever we will submit the form, we will send a req of the specified 'method' of the specified url.
+    corresponding to that url and method, whatever will be given in app.js will be executed.
+
+    When we just type something in the url section of browser, by default the GET method for that url is trigered, not any other method.
+    (This is because we are trying to GET the contents of that page)
+
+    res.redirect is also just taking us to that give url (kind like GET)
+-->

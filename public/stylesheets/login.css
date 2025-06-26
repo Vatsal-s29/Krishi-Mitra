@@ -1,0 +1,196 @@
+/* :root {
+    --market-green: #3c8a2e;
+    --market-brown: #8b5a2b;
+    --market-beige: #f5f1e6;
+    --market-orange: #e67e22;
+    --market-dark-green: #2c6a22;
+    --market-cream: #f9f5eb;
+  }
+
+  body {
+    background-color: var(--market-beige);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  } */
+
+.login-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(60, 138, 46, 0.15);
+    transition: transform 0.3s ease;
+    background-color: white;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+}
+
+.market-header {
+    background-color: var(--market-green);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    position: relative;
+}
+
+.leaf-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 C60 20, 80 40, 90 50 C80 60, 60 80, 50 100 C40 80, 20 60, 10 50 C20 40, 40 20, 50 0' fill='none' stroke='rgba(255,255,255,0.15)' stroke-width='2'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.market-body {
+    background-color: var(--market-cream);
+    padding: 2rem;
+}
+
+.market-btn {
+    background-color: var(--market-green);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(60, 138, 46, 0.2);
+}
+
+.market-btn:hover,
+.market-btn:focus {
+    background-color: var(--market-dark-green);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(60, 138, 46, 0.3);
+}
+
+.market-link {
+    color: var(--market-brown);
+    transition: color 0.2s;
+}
+
+.market-link:hover {
+    color: var(--market-orange);
+}
+
+.market-input,
+.market-input-icon {
+    border-color: #d1c7b8;
+    background-color: white;
+}
+
+.market-input-icon {
+    color: var(--market-green);
+}
+
+.market-checkbox {
+    border-color: #d1c7b8;
+}
+
+.market-checkbox:checked {
+    background-color: var(--market-green);
+    border-color: var(--market-green);
+}
+
+.market-social-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    background-color: white;
+    color: var(--market-brown);
+    border: 1px solid #d1c7b8;
+}
+
+.market-social-btn:hover {
+    background-color: var(--market-green);
+    color: white;
+    border-color: var(--market-green);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #d1c7b8;
+}
+
+.divider-text {
+    padding: 0 1rem;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.market-footer {
+    background-color: var(--market-dark-green);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.market-footer::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--market-orange),
+        var(--market-orange) 20px,
+        var(--market-brown) 20px,
+        var(--market-brown) 40px
+    );
+    opacity: 0.7;
+}
+
+.input-group-text,
+.form-control {
+    border-radius: 8px;
+}
+
+.input-group > :first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group > :last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Add some farm/produce decorative elements */
+.market-body::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233c8a2e' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2a9 9 0 0 0-9 9c0 4 3 8 9 14 6-6 9-10 9-14a9 9 0 0 0-9-9zm0 13a4 4 0 1 1 0-8 4 4 0 0 1 0 8z'/%3E%3C/svg%3E");
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.market-body::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b5a2b' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12h20M12 2v20'/%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6 6 6 0 0 1-6-6 6 6 0 0 1 6-6z'/%3E%3C/svg%3E");
+    opacity: 0.2;
+    pointer-events: none;
+}

@@ -1,0 +1,398 @@
+<!-- views/index.ejs -->
+<% layout('layouts/boilerplate') %>
+
+<header id="hero-container">
+    <div class="bg-img active" id="bg1"></div>
+    <div class="bg-img" id="bg2"></div>
+
+    <main class="hero-section" id="hero-section">
+        <div class="glassmorphism-box-hero">
+            <div class="hero-section-content" data-aos="fade-up">
+                <h1 class="typewriter"></h1>
+                <p class="hero-section-sub-heading">
+                    Locally grown produce straight from our farmers to you.
+                </p>
+                <a href="/campgrounds">
+                    <button class="btn">Discover Our Markets</button>
+                </a>
+            </div>
+        </div>
+        <!-- scroll down img -->
+        <img
+            src="/images/scroll.png"
+            class="scroll-down-icon"
+            alt="scroll down indicator"
+        />
+    </main>
+    <br />
+</header>
+
+<!-- explorer section -->
+<br />
+<br />
+
+<section class="explore-section" id="explore-section">
+    <div class="glassmorphism-box">
+        <h1 class="section-title" data-aos="fade-up">Explore Our Markets</h1>
+        <p class="section-para" data-aos="fade-up">
+            Welcome to our vibrant farmers market, where local growers showcase
+            the freshest seasonal produce harvested at peak ripeness for maximum
+            flavor and nutrition.
+        </p>
+
+        <strong
+            ><p class="section-para" data-aos="fade-up">
+                Every weekend, our community gathers to celebrate sustainable
+                agriculture and support local farmers who practice
+                environmentally-friendly growing methods without harmful
+                pesticides.
+            </p></strong
+        >
+        <p class="section-para" data-aos="fade-up">
+            <a href="/campgrounds">
+                <button class="btn">Explore Our Offerings</button>
+            </a>
+        </p>
+    </div>
+    <br />
+
+    <!-- grid -->
+    <div class="tours-container">
+        <div class="tour-card" data-aos="fade-up">
+            <img
+                src="https://images.unsplash.com/photo-1526470303-82c787d88682?q=80&w=2738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                class="tour-img"
+                alt="Fresh vegetables display"
+            />
+            <div class="tour-info">
+                <h3 class="tour-name">Seasonal Vegetables</h3>
+                <p class="tour-action">Farm fresh goodness</p>
+            </div>
+        </div>
+        <div class="tour-card" data-aos="fade-up">
+            <img
+                src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                class="tour-img"
+                alt="Organic fruits collection"
+            />
+            <div class="tour-info">
+                <h3 class="tour-name">Organic Fruits</h3>
+                <p class="tour-action">Naturally sweet treats</p>
+            </div>
+        </div>
+        <div class="tour-card" data-aos="fade-up">
+            <img
+                src="https://plus.unsplash.com/premium_photo-1701186689637-9a00bf615386?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                class="tour-img"
+                alt="Artisan bread display"
+            />
+            <div class="tour-info">
+                <h3 class="tour-name">Artisan Breads</h3>
+                <p class="tour-action">Handcrafted daily</p>
+            </div>
+        </div>
+        <div class="tour-card" data-aos="fade-up">
+            <img
+                src="https://plus.unsplash.com/premium_photo-1664273586888-859762c34ce4?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                class="tour-img"
+                alt="Local honey products"
+            />
+            <div class="tour-info">
+                <h3 class="tour-name">Local Honey</h3>
+                <p class="tour-action">Pure and unfiltered</p>
+            </div>
+        </div>
+        <div class="tour-card" data-aos="fade-up">
+            <img
+                src="https://images.unsplash.com/photo-1627935722051-395636b0d8a5?q=80&w=2946&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                class="tour-img"
+                alt="Artisanal cheese selection"
+            />
+            <div class="tour-info">
+                <h3 class="tour-name">Artisanal Cheese</h3>
+                <p class="tour-action">Small-batch dairy</p>
+            </div>
+        </div>
+        <div class="tour-card" data-aos="fade-up">
+            <img
+                src="https://images.unsplash.com/photo-1526399743290-f73cb4022f48?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                class="tour-img"
+                alt="Colorful farmers market stall"
+            />
+            <div class="tour-info">
+                <h3 class="tour-name">Market Experience</h3>
+                <p class="tour-action">Meet our farmers</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- services section -->
+<section class="services-section" id="services">
+    <div class="glassmorphism-box">
+        <h1 class="section-title" data-aos="fade-up">Farmer's Market Tales</h1>
+        <strong
+            ><p class="section-para" data-aos="fade-up">
+                Farmer's Market Tales is our new web app that captures the true
+                essence of community. Discover inspiring stories and insightful
+                blogs shared by fellow farmers.
+            </p></strong
+        >
+
+        <p class="section-para" data-aos="fade-up">
+            Discover the inspiring stories behind our local farmers and their
+            commitment to sustainable agriculture and traditional farming
+            methods.
+            <br />
+            Learn about seasonal growing tips, delicious recipes using
+            market-fresh ingredients, and ways to preserve your farmers market
+            bounty.
+        </p>
+        <p class="section-para" data-aos="fade-up">
+            <a href="/blogg/index.html" target="_blank">
+                <button class="btn">Read Our Blog</button>
+            </a>
+            <!-- <br /> -->
+        </p>
+
+        <div class="travel-grid" id="travel">
+            <img
+                src="https://plus.unsplash.com/premium_photo-1686285540093-0613f74311dd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                data-aos="fade-up"
+                alt="Farmer harvesting vegetables"
+            />
+            <img
+                src="https://plus.unsplash.com/premium_photo-1686754185593-916ea2fa4181?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                data-aos="fade-up"
+                alt="Early morning at the farmers market"
+            />
+            <img
+                src="https://images.unsplash.com/photo-1514425263458-109317cc1321?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                data-aos="fade-up"
+                alt="Cooking demonstration with fresh produce"
+            />
+            <img
+                src="https://media.istockphoto.com/id/1347384585/photo/portrait-of-an-indian-female-farmer-in-traditional-dress-indian-girl-farmer-working-in-the.webp?a=1&b=1&s=612x612&w=0&k=20&c=morZkmlQR_R6g3F8PE5nVqZo8FSKeeeeYdqPzZyKVgw="
+                data-aos="fade-up"
+                alt="Cooking demonstration with fresh produce"
+            />
+        </div>
+    </div>
+
+    <section class="Why-Us" id="Why-Us">
+        <h1 class="section-title" data-aos="fade-up">
+            Why Choose Our Markets?
+        </h1>
+        <p class="section-para" data-aos="fade-up">
+            Supporting local farmers and artisans while enjoying the freshest,
+            most nutritious foods. By shopping at our markets, you’re not only
+            investing in high-quality produce but also contributing to the
+            sustainability of your community and the well-being of its members.
+            Join us in fostering a healthier, more connected world—one local
+            purchase at a time.
+        </p>
+
+        <!-- services grid -->
+        <div class="serives-grid">
+            <div class="service-card" data-aos="fade-up">
+                <div class="circle">
+                    <img
+                        src="images/hero/img1.jpg"
+                        alt="Service 1 Image"
+                        class="service-img"
+                    />
+                </div>
+                <p class="service-text">100% Locally Grown</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="circle">
+                    <img
+                        src="images/hero/img2.jpg"
+                        alt="Service 2 Image"
+                        class="service-img"
+                    />
+                </div>
+                <p class="service-text">Sustainable Practices</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="circle">
+                    <img
+                        src="images/hero/img3.jpg"
+                        alt="Service 3 Image"
+                        class="service-img"
+                    />
+                </div>
+                <p class="service-text">Seasonal Freshness</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="circle">
+                    <img
+                        src="images/hero/img4.jpg"
+                        alt="Service 4 Image"
+                        class="service-img"
+                    />
+                </div>
+                <p class="service-text">Community Support</p>
+            </div>
+            <div class="service-card" data-aos="fade-up">
+                <div class="circle">
+                    <img
+                        src="images/hero/img5.jpg"
+                        alt="Service 5 Image"
+                        class="service-img"
+                    />
+                </div>
+                <p class="service-text">Ethical Food Sourcing</p>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- book section -->
+<section class="book-section" id="booknow">
+    <div class="book-content" data-aos="fade-up">
+        <h1 class="book-now-title">Reserve Your Farm Box</h1>
+        <p class="book-now-text">
+            Skip the lines and guarantee your weekly farm-fresh produce!
+            Pre-order your customizable farm box filled with seasonal fruits,
+            vegetables, and artisanal products handpicked from our local farms.
+        </p>
+        <a href="/login">
+            <button class="btn">Reserve Now</button>
+        </a>
+    </div>
+    <img
+        src="/images/hamper.png"
+        data-aos="fade-up"
+        class="book-now-img"
+        alt="Weekly farm box subscription"
+    />
+</section>
+
+<!-- Added seasonal calendar section -->
+<section class="seasonal-section" id="seasonal">
+    <div class="glassmorphism-box">
+        <h1 class="section-title" data-aos="fade-up">What's In Season</h1>
+        <p class="section-para" data-aos="fade-up">
+            Our produce changes with the seasons, ensuring you always get the
+            freshest, most flavorful options
+        </p>
+
+        <div class="seasonal-calendar">
+            <div class="season-card" data-aos="fade-up">
+                <h3>Spring</h3>
+                <p>
+                    Asparagus, Peas, Radishes, Rhubarb, Spring Onions,
+                    Strawberries
+                </p>
+            </div>
+            <div class="season-card" data-aos="fade-up">
+                <h3>Summer</h3>
+                <p>
+                    Berries, Corn, Cucumbers, Eggplant, Peaches, Tomatoes,
+                    Zucchini
+                </p>
+            </div>
+            <div class="season-card" data-aos="fade-up">
+                <h3>Fall</h3>
+                <p>
+                    Apples, Brussels Sprouts, Cauliflower, Grapes, Pears,
+                    Pumpkins, Winter Squash
+                </p>
+            </div>
+            <div class="season-card" data-aos="fade-up">
+                <h3>Winter</h3>
+                <p>
+                    Beets, Citrus, Kale, Leeks, Potatoes, Root Vegetables,
+                    Winter Greens
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Added vendor spotlight section -->
+<section class="vendor-spotlight" id="vendors">
+    <h1 class="section-title" data-aos="fade-up">Meet Our Farmers</h1>
+
+    <div class="vendor-grid">
+        <div class="vendor-card" data-aos="fade-up">
+            <img
+                src="https://images.unsplash.com/photo-1657288649124-b80bdee3c17e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Farmer John's Organic Produce"
+            />
+            <h3>John's Organic Produce</h3>
+            <p>
+                Growing certified organic vegetables on 5 acres for over 15
+                years
+            </p>
+            <span class="vendor-tag">Vegetables</span>
+            <span class="vendor-tag">Herbs</span>
+        </div>
+        <div class="vendor-card" data-aos="fade-up">
+            <img
+                src="https://images.unsplash.com/photo-1594731884638-8197c3102d1d?q=80&w=2825&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Green Valley Dairy"
+            />
+            <h3>Green Valley Dairy</h3>
+            <p>Small-batch artisanal cheeses and yogurts from grass-fed cows</p>
+            <span class="vendor-tag">Dairy</span>
+            <span class="vendor-tag">Cheese</span>
+        </div>
+        <div class="vendor-card" data-aos="fade-up">
+            <img
+                src="https://images.unsplash.com/photo-1708057986191-9c0337c2f5c6?q=80&w=3135&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Sweet Acres Orchard"
+            />
+            <h3>Sweet Acres Orchard</h3>
+            <p>
+                Family-run orchard specializing in heirloom apple varieties and
+                stone fruits
+            </p>
+            <span class="vendor-tag">Fruit</span>
+            <span class="vendor-tag">Preserves</span>
+        </div>
+    </div>
+
+    <div class="center-button" data-aos="fade-up">
+        <a href="/campgrounds">
+            <button class="btn">View All Markets</button>
+        </a>
+    </div>
+</section>
+
+<script>
+    const images = [
+        "hero/img1.jpg",
+        "hero/img2.jpg",
+        "hero/img3.jpg",
+        "hero/img4.jpg",
+        "hero/img5.jpg",
+        "hero/img6.jpg",
+    ];
+
+    let current = 0;
+    const bg1 = document.getElementById("bg1");
+    const bg2 = document.getElementById("bg2");
+
+    // Initialize
+    bg1.style.backgroundImage = `url('/images/${images[current]}')`;
+    bg1.classList.add("active");
+
+    setInterval(() => {
+        const next = (current + 1) % images.length;
+        const nextImg = `/images/${images[next]}`;
+
+        if (bg1.classList.contains("active")) {
+            bg2.style.backgroundImage = `url('${nextImg}')`;
+            bg2.classList.add("active");
+            bg1.classList.remove("active");
+        } else {
+            bg1.style.backgroundImage = `url('${nextImg}')`;
+            bg1.classList.add("active");
+            bg2.classList.remove("active");
+        }
+
+        current = next;
+    }, 2500);
+</script>

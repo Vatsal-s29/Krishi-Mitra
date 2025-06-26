@@ -1,0 +1,388 @@
+<nav class="farm-navbar">
+    <div class="navbar-container">
+        <div class="navbar-brand">
+            <a href="/">
+                <i class="fas fa-leaf leaf-icon"></i>
+                <span>Krishi-Mitra</span>
+            </a>
+        </div>
+        <button
+            class="menu-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+        >
+            <span class="menu-icon"></span>
+        </button>
+        <div class="navbar-menu">
+            <div class="nav-links">
+                <a class="nav-link" href="/" data-text="Home">Home</a>
+                <a class="nav-link" href="/campgrounds" data-text="All Markets"
+                    >All Markets</a
+                >
+                <a
+                    class="nav-link"
+                    href="/campgrounds/new"
+                    data-text="Add Market"
+                    >Add Market</a
+                >
+                <a
+                    class="nav-link"
+                    href="https://my-plant-buddy.streamlit.app"
+                    data-text="Disease Prediction"
+                    >Disease Prediction</a
+                >
+                <a
+                    class="nav-link"
+                    href="https://3f56a8d6f52635c1f9.gradio.live"
+                    data-text="Farm-Buddy"
+                    >Farm-Buddy</a
+                >
+            </div>
+            <div class="auth-links">
+                <% if(!currentUser){ %>
+                <a class="auth-link login" href="/login">Login</a>
+                <a class="auth-link register" href="/register">Register</a>
+                <% } else { %>
+                <a class="user-profile" href="/">
+                    <div class="user-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="username">Welcome</span>
+                </a>
+                <a class="auth-link logout" href="/logout">Logout</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* Google Fonts Import */
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+    /* Navbar Styles */
+    .farm-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        padding: 0;
+        height: 70px;
+        font-family: "Poppins", sans-serif;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 20px;
+    }
+
+    /* Brand Styles */
+    .navbar-brand a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #2e7d32;
+        font-weight: 600;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-brand a:hover {
+        color: #1b5e20;
+    }
+
+    .leaf-icon {
+        font-size: 1.8rem;
+        margin-right: 8px;
+        color: #43a047;
+    }
+
+    /* Menu Container */
+    .navbar-menu {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-grow: 1;
+        margin-left: 40px;
+    }
+
+    /* Navigation Links */
+    .nav-links {
+        display: flex;
+        gap: 10px;
+    }
+
+    .nav-link {
+        color: #555;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 500;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 8px;
+        left: 16px;
+        color: #2e7d32;
+        font-weight: 600;
+        width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: transparent;
+    }
+
+    .nav-link:hover::after {
+        width: calc(100% - 32px);
+    }
+
+    /* Auth Links */
+    .auth-links {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-left: auto;
+    }
+
+    .auth-link {
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 18px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .login {
+        color: #2e7d32;
+        border: 2px solid #2e7d32;
+        background-color: transparent;
+    }
+
+    .login:hover {
+        background-color: rgba(46, 125, 50, 0.1);
+    }
+
+    .register {
+        background-color: #2e7d32;
+        color: white;
+        border: 2px solid #2e7d32;
+    }
+
+    .register:hover {
+        background-color: #1b5e20;
+        border-color: #1b5e20;
+    }
+
+    .logout {
+        color: #e53935;
+        border: 2px solid #e53935;
+        background-color: transparent;
+    }
+
+    .logout:hover {
+        background-color: rgba(229, 57, 53, 0.1);
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #555;
+        padding: 5px 10px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .user-profile:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .user-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .username {
+        font-weight: 500;
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        position: relative;
+        width: 40px;
+        height: 40px;
+    }
+
+    .menu-icon,
+    .menu-icon::before,
+    .menu-icon::after {
+        position: absolute;
+        width: 24px;
+        height: 3px;
+        background: #2e7d32;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+
+    .menu-icon {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .menu-icon::before,
+    .menu-icon::after {
+        content: "";
+        left: 0;
+    }
+
+    .menu-icon::before {
+        top: -8px;
+    }
+
+    .menu-icon::after {
+        bottom: -8px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+        .menu-toggle {
+            display: block;
+            order: 3;
+        }
+
+        .navbar-menu {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            flex-direction: column;
+            background-color: white;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            transition: clip-path 0.4s ease-out;
+            align-items: flex-start;
+            margin-left: 0;
+        }
+
+        .navbar-menu.active {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .nav-links {
+            flex-direction: column;
+            width: 100%;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            width: 100%;
+            padding: 12px 16px;
+        }
+
+        .auth-links {
+            flex-direction: column;
+            width: 100%;
+            gap: 15px;
+            margin-left: 0;
+        }
+
+        .auth-link {
+            width: 100%;
+            text-align: center;
+        }
+
+        .user-profile {
+            width: 100%;
+            padding: 12px 16px;
+            justify-content: center;
+        }
+
+        /* Animated menu icon */
+        .menu-toggle.active .menu-icon {
+            background: transparent;
+        }
+
+        .menu-toggle.active .menu-icon::before {
+            top: 0;
+            transform: rotate(45deg);
+        }
+
+        .menu-toggle.active .menu-icon::after {
+            bottom: 0;
+            transform: rotate(-45deg);
+        }
+    }
+</style>
+
+<!-- Add JavaScript for mobile menu toggle -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navbarMenu = document.querySelector(".navbar-menu");
+
+        menuToggle.addEventListener("click", function () {
+            this.classList.toggle("active");
+            navbarMenu.classList.toggle("active");
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener("click", function (event) {
+            if (
+                !navbarMenu.contains(event.target) &&
+                !menuToggle.contains(event.target) &&
+                navbarMenu.classList.contains("active")
+            ) {
+                menuToggle.classList.remove("active");
+                navbarMenu.classList.remove("active");
+            }
+        });
+
+        // Close menu when window is resized to desktop size
+        window.addEventListener("resize", function () {
+            if (
+                window.innerWidth > 992 &&
+                navbarMenu.classList.contains("active")
+            ) {
+                menuToggle.classList.remove("active");
+                navbarMenu.classList.remove("active");
+            }
+        });
+    });
+</script>
+
+<!-- Font Awesome for icons -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>

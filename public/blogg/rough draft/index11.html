@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers' Market Tales</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        body { background-color: #E0FFCC; }
+        .post-card {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+        .post-card:hover .post-image {
+            transform: scale(1.05);
+        }
+        .modal {
+            transition: all 0.3s ease-in-out;
+        }
+        #three-canvas, #blob-canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .elastic-reveal {
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: top;
+            animation: elasticReveal 0.8s ease-out forwards;
+        }
+        @keyframes elasticReveal {
+            0% { opacity: 0; transform: scaleY(0); }
+            60% { opacity: 1; transform: scaleY(1.1); }
+            100% { opacity: 1; transform: scaleY(1); }
+        }
+        .post-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .post-content {
+            position: relative;
+            z-index: 2;
+        }
+        #transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            transform: scale(0);
+            pointer-events: none;
+        }
+        h3.distort {
+            transition: all 0.3s ease;
+        }
+        h3.distort:hover {
+            transform: skewX(-10deg) scale(1.05);
+        }
+        .nav-link {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .nav-link:hover {
+            transform: translateY(-5px) skewX(-5deg);
+
+        }
+        .read-more {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .read-more:hover {
+            transform: scale(1.1) translateY(-3px);
+       
+        }
+        .input-focus {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .input-focus:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 10px #98C379;
+        }
+        .submit-btn {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .submit-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 10px 20px rgba(139, 69, 19, 0.5);
+        }
+        .filter-btn.active {
+            background-color: #8B4513;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="font-['Inter'] antialiased">
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+    <!-- Blob Canvas -->
+    <canvas id="blob-canvas" style="z-index: 5;"></canvas>
+    <!-- Transition Overlay -->
+    <div id="transition-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-['Playfair_Display'] text-[#355E3B]">Farmers' Market Tales</h1>
+            <div class="flex items-center space-x-6">
+                <a href="#" class="nav-link text-[#355E3B] hover:text-[#8B4513] transition-colors">Home</a>
+                <a href="#" class="nav-link text-[#355E3B] hover:text-[#8B4513] transition-colors">Market Stories</a>
+                <a href="#" class="nav-link text-[#355E3B] hover:text-[#8B4513] transition-colors">Farmers</a>
+                <a href="#" class="nav-link text-[#355E3B] hover:text-[#8B4513] transition-colors">Login/Signup</a>
+                <div class="relative">
+                    <input type="text" id="search" placeholder="Search market tales..." 
+                           class="input-focus pl-10 pr-4 py-2 rounded-full border border-[#355E3B] focus:outline-none focus:border-[#8B4513]">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-[#355E3B]"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 pt-24 pb-12">
+        <!-- Featured Post with Three.js -->
+        <section class="mb-16 relative overflow-hidden rounded-xl shadow-2xl h-96 fade-in" id="featured-section">
+            <div id="three-container" class="relative h-full w-full">
+                <canvas id="three-canvas"></canvas>
+                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center z-10">
+                    <div class="text-white p-8 max-w-2xl">
+                        <h2 class="text-4xl font-['Playfair_Display'] mb-4">Finding the Perfect Market</h2>
+                        <p class="text-lg mb-6">How I used the website to pick the best local marketplace for my produce.</p>
+                        <button class="bg-[#8B4513] text-white px-6 py-3 rounded-full hover:bg-[#FFB833] hover:text-[#355E3B] transition-all">Read Tale</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Posts Grid with Filters -->
+        <section class="mb-12 fade-in" id="posts-section">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-[#355E3B]">Latest Market Tales</h3>
+                <div class="space-x-2">
+                    <button class="filter-btn px-4 py-2 rounded-full bg-[#355E3B] text-white hover:bg-[#8B4513] active" data-category="all">All</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-[#355E3B] text-white hover:bg-[#8B4513]" data-category="success">Success</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-[#355E3B] text-white hover:bg-[#8B4513]" data-category="lessons">Lessons</button>
+                </div>
+            </div>
+            <div id="posts-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Card 1 -->
+                <article class="post-card bg-white rounded-xl shadow-md overflow-hidden fade-in" data-category="success">
+                    <canvas class="post-canvas"></canvas>
+                    <div class="overflow-hidden elastic-reveal">
+                        <img src="fig1.jpeg" alt="Blog post" class="post-image w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6 post-content">
+                        <span class="inline-block px-3 py-1 bg-[#FFB833] text-[#355E3B] text-sm rounded-full mb-3">Success</span>
+                        <h3 class="text-xl font-semibold text-[#355E3B] mb-3 distort">Thriving at Downtown Market</h3>
+                        <p class="text-[#355E3B] text-sm mb-4 line-clamp-2">Using the site to find a bustling market doubled my sales.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#355E3B] text-sm">March 16, 2025</span>
+                            <button class="read-more text-[#8B4513] hover:text-[#FFB833] font-medium">Read More</button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Blog Card 2 -->
+                <article class="post-card bg-white rounded-xl shadow-md overflow-hidden fade-in" data-category="lessons">
+                    <canvas class="post-canvas"></canvas>
+                    <div class="overflow-hidden elastic-reveal">
+                        <img src="fig2.jpeg" alt="Blog post" class="post-image w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6 post-content">
+                        <span class="inline-block px-3 py-1 bg-[#98C379] text-[#355E3B] text-sm rounded-full mb-3">Lessons</span>
+                        <h3 class="text-xl font-semibold text-[#355E3B] mb-3 distort">Market Mismatch Lessons</h3>
+                        <p class="text-[#355E3B] text-sm mb-4 line-clamp-2">What I learned after picking the wrong market online.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#355E3B] text-sm">March 16, 2025</span>
+                            <button class="read-more text-[#8B4513] hover:text-[#FFB833] font-medium">Read More</button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Blog Card 3 -->
+                <article class="post-card bg-white rounded-xl shadow-md overflow-hidden fade-in" data-category="success">
+                    <canvas class="post-canvas"></canvas>
+                    <div class="overflow-hidden elastic-reveal">
+                        <img src="fig12.jpeg" alt="Blog post" class="post-image w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6 post-content">
+                        <span class="inline-block px-3 py-1 bg-[#FFB833] text-[#355E3B] text-sm rounded-full mb-3">Success</span>
+                        <h3 class="text-xl font-semibold text-[#355E3B] mb-3 distort">The Coastal Market Win</h3>
+                        <p class="text-[#355E3B] text-sm mb-4 line-clamp-2">Found a gem of a market by the sea that loves my organic herbs.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#355E3B] text-sm">March 15, 2025</span>
+                            <button class="read-more text-[#8B4513] hover:text-[#FFB833] font-medium">Read More</button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Blog Card 4 -->
+                <article class="post-card bg-white rounded-xl shadow-md overflow-hidden fade-in" data-category="lessons">
+                    <canvas class="post-canvas"></canvas>
+                    <div class="overflow-hidden elastic-reveal">
+                        <img src="fig11.jpeg" alt="Blog post" class="post-image w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6 post-content">
+                        <span class="inline-block px-3 py-1 bg-[#98C379] text-[#355E3B] text-sm rounded-full mb-3">Lessons</span>
+                        <h3 class="text-xl font-semibold text-[#355E3B] mb-3 distort">Overcrowded Market Blues</h3>
+                        <p class="text-[#355E3B] text-sm mb-4 line-clamp-2">Picked a market with too many vendors; my sales tanked.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#355E3B] text-sm">March 14, 2025</span>
+                            <button class="read-more text-[#8B4513] hover:text-[#FFB833] font-medium">Read More</button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Blog Card 5 -->
+                <article class="post-card bg-white rounded-xl shadow-md overflow-hidden fade-in" data-category="success">
+                    <canvas class="post-canvas"></canvas>
+                    <div class="overflow-hidden elastic-reveal">
+                        <img src="fig8.jpeg" alt="Blog post" class="post-image w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6 post-content">
+                        <span class="inline-block px-3 py-1 bg-[#FFB833] text-[#355E3B] text-sm rounded-full mb-3">Success</span>
+                        <h3 class="text-xl font-semibold text-[#355E3B] mb-3 distort">Small Town, Big Gains</h3>
+                        <p class="text-[#355E3B] text-sm mb-4 line-clamp-2">A quiet market I found online turned out to be a goldmine.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#355E3B] text-sm">March 13, 2025</span>
+                            <button class="read-more text-[#8B4513] hover:text-[#FFB833] font-medium">Read More</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Blog Submission Section -->
+        <section class="mb-12 bg-white rounded-xl shadow-md p-6 fade-in">
+            <h3 class="text-2xl font-bold text-[#355E3B] mb-6">Share Your Market Tale</h3>
+            <form id="blog-form" class="space-y-6">
+                <div>
+                    <label for="post-title" class="block text-[#355E3B] font-semibold mb-2">Title</label>
+                    <input type="text" id="post-title" required 
+                           class="input-focus w-full px-4 py-2 border border-[#355E3B] rounded-lg focus:outline-none focus:border-[#8B4513]">
+                </div>
+                <div>
+                    <label for="post-category" class="block text-[#355E3B] font-semibold mb-2">Category</label>
+                    <select id="post-category" required 
+                            class="input-focus w-full px-4 py-2 border border-[#355E3B] rounded-lg focus:outline-none focus:border-[#8B4513]">
+                        <option value="success">Success</option>
+                        <option value="lessons">Lessons</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="post-content" class="block text-[#355E3B] font-semibold mb-2">Your Story</label>
+                    <textarea id="post-content" required rows="6" 
+                              class="input-focus w-full px-4 py-2 border border-[#355E3B] rounded-lg focus:outline-none focus:border-[#8B4513]" 
+                              placeholder="Tell us about your experience selecting a marketplace..."></textarea>
+                </div>
+                <div>
+                    <label for="post-image" class="block text-[#355E3B] font-semibold mb-2">Upload Image</label>
+                    <input type="file" id="post-image" accept="image/*" 
+                           class="input-focus w-full px-4 py-2 border border-[#355E3B] rounded-lg focus:outline-none focus:border-[#8B4513]">
+                    <p class="text-sm text-[#355E3B] mt-1">Optional: Add a photo from your market experience</p>
+                </div>
+                <button type="submit" 
+                        class="submit-btn bg-[#8B4513] text-white px-6 py-3 rounded-full hover:bg-[#FFB833] hover:text-[#355E3B] transition-all w-full md:w-auto">
+                    Submit Your Tale
+                </button>
+            </form>
+            <p id="auth-message" class="text-[#8B4513] text-sm mt-2 hidden">Please login or signup to submit your tale.</p>
+        </section>
+    </main>
+
+    <!-- Modal for Post Preview -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-30">
+        <div class="bg-white rounded-xl max-w-2xl w-full mx-4 p-6 modal transform scale-95">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modal-title" class="text-2xl font-semibold text-[#355E3B]">Post Title</h3>
+                <button id="close-modal" class="text-[#355E3B] hover:text-[#8B4513]"><i class="fas fa-times"></i></button>
+            </div>
+            <img id="modal-image" src="" alt="Post image" class="w-full h-64 object-cover rounded-md mb-4 hidden">
+            <p id="modal-content" class="text-[#355E3B]"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#2F2E41] text-white py-12 fade-in">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-xl font-['Playfair_Display'] mb-4 text-[#FFB833]">Farmers' Market Tales</h4>
+                <p class="text-[#F5E8C7]">Farmers share their marketplace picks from our site.</p>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-[#FFB833]">Quick Links</h4>
+                <ul class="space-y-2 text-[#F5E8C7]">
+                    <li><a href="#" class="hover:text-[#8B4513]">Home</a></li>
+                    <li><a href="#" class="hover:text-[#8B4513]">Market Stories</a></li>
+                    <li><a href="#" class="hover:text-[#8B4513]">Farmers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-[#FFB833]">Connect</h4>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-[#F5E8C7] hover:text-[#8B4513]"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-[#F5E8C7] hover:text-[#8B4513]"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-[#F5E8C7] hover:text-[#8B4513]"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-[#F5E8C7]">© 2025 Farmers' Market Tales. All rights reserved.</div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Three.js Setup for Featured Section (Globe with Tractor)
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 400, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, 400);
+
+        const globeGeometry = new THREE.SphereGeometry(5, 32, 32);
+        const globeMaterial = new THREE.MeshBasicMaterial({ color: 0x355E3B, wireframe: true });
+        const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+        scene.add(globe);
+
+        const tractorGeometry = new THREE.BoxGeometry(2, 1, 1);
+        const tractorMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
+        const tractor = new THREE.Mesh(tractorGeometry, tractorMaterial);
+        tractor.position.set(7, 0, 0);
+        scene.add(tractor);
+
+        camera.position.z = 15;
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        let isHovered = false;
+        const featuredSection = document.getElementById('featured-section');
+        featuredSection.addEventListener('mouseenter', () => isHovered = true);
+        featuredSection.addEventListener('mouseleave', () => isHovered = false);
+
+        let tractorAngle = 0;
+        function animateFeatured() {
+            requestAnimationFrame(animateFeatured);
+            globe.rotation.y += 0.01;
+            tractorAngle += isHovered ? 0.05 : 0.02;
+            tractor.position.x = 7 * Math.cos(tractorAngle);
+            tractor.position.z = 7 * Math.sin(tractorAngle);
+            tractor.rotation.y += isHovered ? 0.1 : 0.05;
+            renderer.render(scene, camera);
+        }
+        animateFeatured();
+
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            camera.aspect = width / 400;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, 400);
+        });
+
+        // Farming-Inspired Cursor (Wheat Stalk)
+        const blobScene = new THREE.Scene();
+        const blobCamera = new THREE.OrthographicCamera(
+            -window.innerWidth / 2, window.innerWidth / 2,
+            window.innerHeight / 2, -window.innerHeight / 2,
+            0.1, 1000
+        );
+        const blobRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('blob-canvas'), alpha: true });
+        blobRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        const wheatPoints = [
+            new THREE.Vector2(0, -15),
+            new THREE.Vector2(2, -10),
+            new THREE.Vector2(1, 0),
+            new THREE.Vector2(3, 5),
+            new THREE.Vector2(5, 10),
+            new THREE.Vector2(0, 15)
+        ];
+        const blobGeometry = new THREE.LatheGeometry(wheatPoints, 8);
+        const blobMaterial = new THREE.ShaderMaterial({
+            uniforms: { time: { value: 0.0 }, click: { value: 0.0 } },
+            vertexShader: `
+                varying vec2 vUv;
+                uniform float time;
+                uniform float click;
+                void main() {
+                    vUv = uv;
+                    vec3 pos = position;
+                    pos.x += sin(time + pos.y * 0.2) * 2.0;
+                    pos.y += sin(click * 3.14) * 5.0 * (1.0 - vUv.y);
+                    pos.x += cos(click * 3.14) * 3.0 * vUv.y;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                varying vec2 vUv;
+                void main() {
+                    float dist = length(vUv - vec2(0.5));
+                    float alpha = smoothstep(0.5, 0.2, dist);
+                    vec3 color1 = vec3(0.54, 0.27, 0.07);
+                    vec3 color2 = vec3(1.0, 0.72, 0.20);
+                    vec3 color = mix(color1, color2, vUv.y + 0.5 + sin(time) * 0.1);
+                    gl_FragColor = vec4(color, alpha * 0.7);
+                }
+            `,
+            transparent: true
+        });
+        const blob = new THREE.Mesh(blobGeometry, blobMaterial);
+        blobScene.add(blob);
+
+        const trailScene = new THREE.Scene();
+        const trailParticles = [];
+        const trailGeometry = new THREE.SphereGeometry(2, 8, 8);
+        const trailMaterial = new THREE.MeshBasicMaterial({ color: 0x98C379, transparent: true });
+
+        blobCamera.position.z = 100;
+
+        document.addEventListener('click', () => {
+            blobMaterial.uniforms.click.value = 1.0;
+            setTimeout(() => blobMaterial.uniforms.click.value = 0.0, 300);
+
+            const grain = new THREE.Mesh(trailGeometry, trailMaterial.clone());
+            grain.position.set(blob.position.x, blob.position.y, 0);
+            grain.scale.set(0.5, 0.5, 0.5);
+            grain.material.opacity = 0.8;
+            trailParticles.push({ mesh: grain, life: 1.0 });
+            trailScene.add(grain);
+        });
+
+        function animateBlob() {
+            requestAnimationFrame(animateBlob);
+            blobMaterial.uniforms.time.value += 0.05;
+            blob.position.x = mouseX - window.innerWidth / 2;
+            blob.position.y = window.innerHeight / 2 - mouseY;
+            blob.scale.set(0.5 + Math.sin(blobMaterial.uniforms.time.value) * 0.05, 0.5 + Math.cos(blobMaterial.uniforms.time.value) * 0.05, 1);
+
+            for (let i = trailParticles.length - 1; i >= 0; i--) {
+                const p = trailParticles[i];
+                p.life -= 0.05;
+                p.mesh.material.opacity = p.life;
+                p.mesh.position.y -= 2;
+                p.mesh.scale.setScalar(p.life * 0.5);
+                if (p.life <= 0) {
+                    trailScene.remove(p.mesh);
+                    trailParticles.splice(i, 1);
+                }
+            }
+
+            blobRenderer.render(blobScene, blobCamera);
+            blobRenderer.render(trailScene, blobCamera);
+        }
+        animateBlob();
+
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            blobCamera.left = -width / 2;
+            blobCamera.right = width / 2;
+            blobCamera.top = height / 2;
+            blobCamera.bottom = -height / 2;
+            blobCamera.updateProjectionMatrix();
+            blobRenderer.setSize(width, height);
+        });
+
+        // Dynamic Background
+        const bgScene = new THREE.Scene();
+        const bgCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const bgRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        bgRenderer.setSize(window.innerWidth, window.innerHeight);
+
+        const particleCount = 200;
+        const particlesGeometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const velocities = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 1000;
+            positions[i + 1] = (Math.random() - 0.5) * 1000;
+            positions[i + 2] = (Math.random() - 0.5) * 1000;
+            velocities[i] = (Math.random() - 0.5) * 0.5;
+            velocities[i + 1] = (Math.random() - 0.5) * 0.5;
+            velocities[i + 2] = (Math.random() - 0.5) * 0.5;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particlesMaterial = new THREE.PointsMaterial({ color: 0x98C379, size: 5, transparent: true, opacity: 0.5 });
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        bgScene.add(particles);
+
+        bgCamera.position.z = 500;
+
+        function animateBackground() {
+            requestAnimationFrame(animateBackground);
+            const positions = particlesGeometry.attributes.position.array;
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] += velocities[i];
+                positions[i + 1] += velocities[i + 1];
+                positions[i + 2] += velocities[i + 2];
+                if (Math.abs(positions[i]) > 500) velocities[i] *= -1;
+                if (Math.abs(positions[i + 1]) > 500) velocities[i + 1] *= -1;
+                if (Math.abs(positions[i + 2]) > 500) velocities[i + 2] *= -1;
+            }
+            particlesGeometry.attributes.position.needsUpdate = true;
+            bgRenderer.render(bgScene, bgCamera);
+        }
+        animateBackground();
+
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            bgCamera.aspect = width / height;
+            bgCamera.updateProjectionMatrix();
+            bgRenderer.setSize(width, height);
+        });
+
+        // Post Card Hover Effects
+        const postCards = document.querySelectorAll('.post-card');
+        postCards.forEach(card => {
+            const canvas = card.querySelector('.post-canvas');
+            const rect = card.getBoundingClientRect();
+            const postScene = new THREE.Scene();
+            const postCamera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000);
+            const postRenderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            postRenderer.setSize(rect.width, rect.height);
+
+            const outlineGeometry = new THREE.PlaneGeometry(rect.width, rect.height);
+            const outlineMaterial = new THREE.ShaderMaterial({
+                uniforms: { time: { value: 0.0 }, hover: { value: 0.0 }, mouse: { value: new THREE.Vector2(0.5, 0.5) } },
+                vertexShader: `
+                    varying vec2 vUv;
+                    void main() {
+                        vUv = uv;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    uniform float time;
+                    uniform float hover;
+                    uniform vec2 mouse;
+                    varying vec2 vUv;
+                    void main() {
+                        float dist = distance(vUv, mouse);
+                        float glow = smoothstep(0.1, 0.0, dist) * hover * 0.5;
+                        vec3 color = vec3(1.0, 0.72, 0.20) * (sin(time * 2.0) * 0.5 + 0.5);
+                        gl_FragColor = vec4(color, glow);
+                    }
+                `,
+                transparent: true
+            });
+            const outline = new THREE.Mesh(outlineGeometry, outlineMaterial);
+            postScene.add(outline);
+
+            const grainScene = new THREE.Scene();
+            const grainParticles = [];
+            const grainGeometry = new THREE.SphereGeometry(3, 8, 8);
+            const grainMaterial = new THREE.MeshBasicMaterial({ color: 0xFFB833, transparent: true });
+
+            postCamera.position.z = 100;
+
+            let time = 0;
+            function animatePost() {
+                requestAnimationFrame(animatePost);
+                time += 0.05;
+                outlineMaterial.uniforms.time.value = time;
+
+                for (let i = grainParticles.length - 1; i >= 0; i--) {
+                    const p = grainParticles[i];
+                    p.life -= 0.05;
+                    p.mesh.material.opacity = p.life;
+                    p.mesh.position.x += p.vx;
+                    p.mesh.position.y += p.vy;
+                    p.mesh.scale.setScalar(p.life * 0.5);
+                    if (p.life <= 0) {
+                        grainScene.remove(p.mesh);
+                        grainParticles.splice(i, 1);
+                    }
+                }
+
+                postRenderer.render(postScene, postCamera);
+                postRenderer.render(grainScene, postCamera);
+            }
+            animatePost();
+
+            card.addEventListener('mousemove', (e) => {
+                outlineMaterial.uniforms.hover.value = 1.0;
+                const rect = card.getBoundingClientRect();
+                const localX = (e.clientX - rect.left) / rect.width;
+                const localY = 1 - (e.clientY - rect.top) / rect.height;
+                outlineMaterial.uniforms.mouse.value.set(localX, localY);
+                card.style.transform = `rotateY(${localX * 20 - 10}deg) rotateX(${localY * 20 - 10}deg)`;
+                if (Math.random() < 0.1) {
+                    const grain = new THREE.Mesh(grainGeometry, grainMaterial.clone());
+                    grain.position.set((localX - 0.5) * rect.width, (0.5 - localY) * rect.height, 0);
+                    grain.scale.set(0.5, 0.5, 0.5);
+                    grain.material.opacity = 0.8;
+                    grainParticles.push({ mesh: grain, life: 1.0, vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2 });
+                    grainScene.add(grain);
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                outlineMaterial.uniforms.hover.value = 0.0;
+                card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+
+            window.addEventListener('resize', () => {
+                const newRect = card.getBoundingClientRect();
+                postCamera.aspect = newRect.width / newRect.height;
+                postCamera.updateProjectionMatrix();
+                postRenderer.setSize(newRect.width, newRect.height);
+                outlineGeometry.dispose();
+                outlineGeometry = new THREE.PlaneGeometry(newRect.width, newRect.height);
+                outline.geometry = outlineGeometry;
+            });
+        });
+
+        // Scroll Animation Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    entry.target.querySelectorAll('.elastic-reveal').forEach(img => {
+                        img.classList.add('elastic-reveal');
+                        img.style.animationDelay = '0.2s';
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Transition Effect with Grain Burst
+        function triggerTransition(callback) {
+            const overlay = document.getElementById('transition-overlay');
+            overlay.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            overlay.style.transform = 'scale(1)';
+            
+            const burstScene = new THREE.Scene();
+            const burstCamera = new THREE.OrthographicCamera(-window.innerWidth / 2, window.innerWidth / 2, window.innerHeight / 2, -window.innerHeight / 2, 0.1, 1000);
+            burstCamera.position.z = 100;
+            const burstParticles = [];
+            const burstGeometry = new THREE.SphereGeometry(5, 8, 8);
+            const burstMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513, transparent: true });
+
+            for (let i = 0; i < 20; i++) {
+                const grain = new THREE.Mesh(burstGeometry, burstMaterial.clone());
+                grain.position.set(mouseX - window.innerWidth / 2, window.innerHeight / 2 - mouseY, 0);
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 50 + 50;
+                grain.vx = Math.cos(angle) * speed;
+                grain.vy = Math.sin(angle) * speed;
+                grain.material.opacity = 0.8;
+                burstParticles.push({ mesh: grain, life: 1.0 });
+                burstScene.add(grain);
+            }
+
+            function animateBurst() {
+                for (let i = burstParticles.length - 1; i >= 0; i--) {
+                    const p = burstParticles[i];
+                    p.life -= 0.05;
+                    p.mesh.material.opacity = p.life;
+                    p.mesh.position.x += p.vx * 0.02;
+                    p.mesh.position.y += p.vy * 0.02;
+                    p.mesh.scale.setScalar(p.life);
+                    if (p.life <= 0) {
+                        burstScene.remove(p.mesh);
+                        burstParticles.splice(i, 1);
+                    }
+                }
+                blobRenderer.render(burstScene, burstCamera);
+                if (burstParticles.length > 0) requestAnimationFrame(animateBurst);
+            }
+            animateBurst();
+
+            setTimeout(() => {
+                callback();
+                overlay.style.transform = 'scale(0)';
+            }, 800);
+        }
+
+        // Simulated login state
+        let isLoggedIn = false;
+
+        // Navigation Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('bg-opacity-90', window.scrollY > 50);
+            nav.classList.toggle('backdrop-blur-md', window.scrollY > 50);
+        });
+
+        // Category Filter with Transition
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const posts = document.querySelectorAll('.post-card');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+
+                // Update button states
+                filterButtons.forEach(b => {
+                    b.classList.remove('active');
+                    b.style.backgroundColor = '#355E3B';
+                    b.style.transform = 'scale(1)';
+                });
+                btn.classList.add('active');
+                btn.style.backgroundColor = '#8B4513';
+                btn.style.transform = 'scale(1.1)';
+
+                // Trigger transition and filter posts
+                triggerTransition(() => {
+                    posts.forEach(post => {
+                        const postCategory = post.dataset.category;
+                        if (category === 'all' || postCategory === category) {
+                            post.style.display = 'block';
+                            post.style.opacity = '0';
+                            setTimeout(() => {
+                                post.style.opacity = '1';
+                                post.style.transform = 'translateY(0)';
+                            }, 50);
+                        } else {
+                            post.style.opacity = '0';
+                            post.style.transform = 'translateY(50px)';
+                            setTimeout(() => {
+                                post.style.display = 'none';
+                            }, 500);
+                        }
+                    });
+                });
+            });
+        });
+
+        // Modal Functionality
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalImage = document.getElementById('modal-image');
+        const modalContent = document.getElementById('modal-content');
+        const closeModal = document.getElementById('close-modal');
+
+        document.querySelectorAll('.read-more').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.target.closest('.post-card');
+                modalTitle.textContent = card.querySelector('h3').textContent;
+                modalImage.src = card.querySelector('img').src;
+                modalImage.classList.remove('hidden');
+                modalContent.textContent = card.querySelector('p').textContent;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => modal.querySelector('.modal').classList.remove('scale-95'), 10);
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.querySelector('.modal').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+            modal.classList.remove('flex');
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            posts.forEach(post => {
+                const title = post.querySelector('h3').textContent.toLowerCase();
+                const content = post.querySelector('p').textContent.toLowerCase();
+                post.style.display = (title.includes(searchTerm) || content.includes(searchTerm)) ? 'block' : 'none';
+            });
+        });
+
+        // Blog Submission Functionality
+        const blogForm = document.getElementById('blog-form');
+        const postsGrid = document.getElementById('posts-grid');
+        const authMessage = document.getElementById('auth-message');
+
+        blogForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (!isLoggedIn) {
+                authMessage.classList.remove('hidden');
+                setTimeout(() => authMessage.classList.add('hidden'), 3000);
+                return;
+            }
+
+            triggerTransition(() => {
+                const title = document.getElementById('post-title').value;
+                const category = document.getElementById('post-category').value;
+                const content = document.getElementById('post-content').value;
+                const imageInput = document.getElementById('post-image');
+                const imageFile = imageInput.files[0];
+                const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                let imageSrc = 'fig6.pjeg' + Math.random();
+                if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imageSrc = e.target.result;
+                        addPostToGrid(title, category, content, imageSrc, date);
+                    };
+                    reader.readAsDataURL(imageFile);
+                } else {
+                    addPostToGrid(title, category, content, imageSrc, date);
+                }
+
+                blogForm.reset();
+            });
+        });
+
+        function addPostToGrid(title, category, content, imageSrc, date) {
+            const categoryColor = category === 'success' ? 'bg-[#FFB833] text-[#355E3B]' : 'bg-[#98C379] text-[#355E3B]';
+            const newPost = document.createElement('article');
+            newPost.className = 'post-card bg-white rounded-xl shadow-md overflow-hidden fade-in';
+            newPost.dataset.category = category;
+            newPost.innerHTML = `
+                <canvas class="post-canvas"></canvas>
+                <div class="overflow-hidden elastic-reveal">
+                    <img src="${imageSrc}" alt="Blog post" class="post-image w-full h-56 object-cover">
+                </div>
+                <div class="p-6 post-content">
+                    <span class="inline-block px-3 py-1 ${categoryColor} text-sm rounded-full mb-3">${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                    <h3 class="text-xl font-semibold text-[#355E3B] mb-3 distort">${title}</h3>
+                    <p class="text-[#355E3B] text-sm mb-4 line-clamp-2">${content}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[#355E3B] text-sm">${date}</span>
+                        <button class="read-more text-[#8B4513] hover:text-[#FFB833] font-medium">Read More</button>
+                    </div>
+                </div>
+            `;
+            postsGrid.prepend(newPost);
+            observer.observe(newPost);
+
+            const canvas = newPost.querySelector('.post-canvas');
+            const rect = newPost.getBoundingClientRect();
+            const postScene = new THREE.Scene();
+            const postCamera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000);
+            const postRenderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            postRenderer.setSize(rect.width, rect.height);
+
+            const outlineGeometry = new THREE.PlaneGeometry(rect.width, rect.height);
+            const outlineMaterial = new THREE.ShaderMaterial({
+                uniforms: { time: { value: 0.0 }, hover: { value: 0.0 }, mouse: { value: new THREE.Vector2(0.5, 0.5) } },
+                vertexShader: `
+                    varying vec2 vUv;
+                    void main() {
+                        vUv = uv;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    uniform float time;
+                    uniform float hover;
+                    uniform vec2 mouse;
+                    varying vec2 vUv;
+                    void main() {
+                        float dist = distance(vUv, mouse);
+                        float glow = smoothstep(0.1, 0.0, dist) * hover * 0.5;
+                        vec3 color = vec3(1.0, 0.72, 0.20) * (sin(time * 2.0) * 0.5 + 0.5);
+                        gl_FragColor = vec4(color, glow);
+                    }
+                `,
+                transparent: true
+            });
+            const outline = new THREE.Mesh(outlineGeometry, outlineMaterial);
+            postScene.add(outline);
+
+            const grainScene = new THREE.Scene();
+            const grainParticles = [];
+            const grainGeometry = new THREE.SphereGeometry(3, 8, 8);
+            const grainMaterial = new THREE.MeshBasicMaterial({ color: 0xFFB833, transparent: true });
+
+            postCamera.position.z = 100;
+
+            let time = 0;
+            function animatePost() {
+                requestAnimationFrame(animatePost);
+                time += 0.05;
+                outlineMaterial.uniforms.time.value = time;
+
+                for (let i = grainParticles.length - 1; i >= 0; i--) {
+                    const p = grainParticles[i];
+                    p.life -= 0.05;
+                    p.mesh.material.opacity = p.life;
+                    p.mesh.position.x += p.vx;
+                    p.mesh.position.y += p.vy;
+                    p.mesh.scale.setScalar(p.life * 0.5);
+                    if (p.life <= 0) {
+                        grainScene.remove(p.mesh);
+                        grainParticles.splice(i, 1);
+                    }
+                }
+
+                postRenderer.render(postScene, postCamera);
+                postRenderer.render(grainScene, postCamera);
+            }
+            animatePost();
+
+            newPost.addEventListener('mousemove', (e) => {
+                outlineMaterial.uniforms.hover.value = 1.0;
+                const rect = newPost.getBoundingClientRect();
+                const localX = (e.clientX - rect.left) / rect.width;
+                const localY = 1 - (e.clientY - rect.top) / rect.height;
+                outlineMaterial.uniforms.mouse.value.set(localX, localY);
+                newPost.style.transform = `rotateY(${localX * 20 - 10}deg) rotateX(${localY * 20 - 10}deg)`;
+                if (Math.random() < 0.1) {
+                    const grain = new THREE.Mesh(grainGeometry, grainMaterial.clone());
+                    grain.position.set((localX - 0.5) * rect.width, (0.5 - localY) * rect.height, 0);
+                    grain.scale.set(0.5, 0.5, 0.5);
+                    grain.material.opacity = 0.8;
+                    grainParticles.push({ mesh: grain, life: 1.0, vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2 });
+                    grainScene.add(grain);
+                }
+            });
+
+            newPost.addEventListener('mouseleave', () => {
+                outlineMaterial.uniforms.hover.value = 0.0;
+                newPost.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+
+            window.addEventListener('resize', () => {
+                const newRect = newPost.getBoundingClientRect();
+                postCamera.aspect = newRect.width / newRect.height;
+                postCamera.updateProjectionMatrix();
+                postRenderer.setSize(newRect.width, newRect.height);
+                outlineGeometry.dispose();
+                outlineGeometry = new THREE.PlaneGeometry(newRect.width, newRect.height);
+                outline.geometry = outlineGeometry;
+            });
+
+            newPost.querySelector('.read-more').addEventListener('click', (e) => {
+                modalTitle.textContent = title;
+                modalImage.src = imageSrc;
+                modalImage.classList.remove('hidden');
+                modalContent.textContent = content;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => modal.querySelector('.modal').classList.remove('scale-95'), 10);
+            });
+        }
+    </script>
+</body>
+</html>

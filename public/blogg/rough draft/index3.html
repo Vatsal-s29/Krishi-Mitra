@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers' Marketplace</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for advanced effects */
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .modal {
+            transition: all 0.3s ease-in-out;
+        }
+        .cart-count {
+            top: -8px;
+            right: -8px;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 font-['Inter'] antialiased">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-['Playfair_Display'] text-amber-800">Farmers' Marketplace</h1>
+            <div class="flex items-center space-x-6">
+                <a href="#" class="text-gray-600 hover:text-amber-600 transition-colors">Home</a>
+                <a href="#" class="text-gray-600 hover:text-amber-600 transition-colors">Products</a>
+                <a href="#" class="text-gray-600 hover:text-amber-600 transition-colors">Farmers</a>
+                <div class="relative">
+                    <input type="text" id="search" placeholder="Search products..." 
+                           class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-amber-500">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <button id="cart-btn" class="relative text-gray-600 hover:text-amber-600">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cart-count" class="cart-count absolute bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 pt-24 pb-12">
+        <!-- Featured Product with Parallax -->
+        <section class="mb-16 relative overflow-hidden rounded-xl shadow-2xl">
+            <div class="relative h-96 bg-cover bg-center" style="background-image: url('https://picsum.photos/1400/600?image=1067');">
+                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center">
+                    <div class="text-white p-8 max-w-2xl">
+                        <h2 class="text-4xl font-['Playfair_Display'] mb-4">Fresh Harvest Deals</h2>
+                        <p class="text-lg mb-6">Shop directly from local farmers for the freshest produce and goods.</p>
+                        <button class="bg-amber-600 text-white px-6 py-3 rounded-full hover:bg-amber-700 transition-all">Shop Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Grid with Filters -->
+        <section class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Featured Products</h3>
+                <div class="space-x-2">
+                    <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300" data-category="all">All</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300" data-category="produce">Produce</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300" data-category="dairy">Dairy</button>
+                </div>
+            </div>
+            <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product Card -->
+                <article class="product-card bg-white rounded-xl shadow-md overflow-hidden" data-category="produce" data-price="4.99">
+                    <div class="overflow-hidden">
+                        <img src="https://picsum.photos/400/300?image=659" alt="Product" class="product-image w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-sm rounded-full mb-3">Produce</span>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Organic Tomatoes</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Fresh, locally grown tomatoes from Smith Family Farm.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-amber-700 font-semibold">$4.99/lb</span>
+                            <button class="add-to-cart bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+                <!-- Another Product Card -->
+                <article class="product-card bg-white rounded-xl shadow-md overflow-hidden" data-category="dairy" data-price="6.50">
+                    <div class="overflow-hidden">
+                        <img src="https://picsum.photos/400/301?image=1025" alt="Product" class="product-image w-full h-56 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full mb-3">Dairy</span>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Artisan Cheese</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Handcrafted cheddar from Green Pastures Dairy.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-amber-700 font-semibold">$6.50/block</span>
+                            <button class="add-to-cart bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition-colors">Add to Cart</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-30">
+        <div class="bg-white rounded-xl max-w-lg w-full mx-4 p-6 modal transform scale-95">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Your Cart</h3>
+                <button id="close-cart" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="cart-items" class="space-y-4 mb-4"></div>
+            <div class="flex justify-between items-center border-t pt-4">
+                <span class="text-lg font-semibold text-gray-800">Total:</span>
+                <span id="cart-total" class="text-lg font-semibold text-amber-700">$0.00</span>
+            </div>
+            <button class="bg-amber-600 text-white px-6 py-3 rounded-full w-full mt-4 hover:bg-amber-700 transition-all">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-xl font-['Playfair_Display'] mb-4">Farmers' Marketplace</h4>
+                <p class="text-gray-200">Connecting farmers and buyers since 2025.</p>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                <ul class="space-y-2 text-gray-200">
+                    <li><a href="#" class="hover:text-amber-400">Home</a></li>
+                    <li><a href="#" class="hover:text-amber-400">Products</a></li>
+                    <li><a href="#" class="hover:text-amber-400">Farmers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-200 hover:text-amber-400"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-200 hover:text-amber-400"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-gray-200 hover:text-amber-400"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-gray-200">© 2025 Farmers' Marketplace. All rights reserved.</div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Navigation Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('bg-opacity-90', window.scrollY > 50);
+            nav.classList.toggle('backdrop-blur-md', window.scrollY > 50);
+        });
+
+        // Category Filter
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const products = document.querySelectorAll('.product-card');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+                filterButtons.forEach(b => b.classList.remove('bg-amber-500', 'text-white'));
+                btn.classList.add('bg-amber-500', 'text-white');
+                
+                products.forEach(product => {
+                    product.style.transition = 'opacity 0.3s ease';
+                    if (category === 'all' || product.dataset.category === category) {
+                        product.style.opacity = '1';
+                        product.style.display = 'block';
+                    } else {
+                        product.style.opacity = '0';
+                        setTimeout(() => product.style.display = 'none', 300);
+                    }
+                });
+            });
+        });
+
+        // Cart Functionality
+        let cart = [];
+        const cartModal = document.getElementById('cart-modal');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const cartCount = document.getElementById('cart-count');
+        const cartBtn = document.getElementById('cart-btn');
+        const closeCart = document.getElementById('close-cart');
+
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItems.innerHTML += `
+                    <div class="flex justify-between items-center">
+                        <span>${item.name}</span>
+                        <div class="flex items-center space-x-2">
+                            <span>$${item.price.toFixed(2)}</span>
+                            <button class="remove-item text-red-500 hover:text-red-700 text-sm" data-index="${index}">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+            cartCount.textContent = cart.length;
+            cartCount.classList.toggle('hidden', cart.length === 0);
+        }
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.target.closest('.product-card');
+                const name = card.querySelector('h3').textContent;
+                const price = parseFloat(card.dataset.price);
+                cart.push({ name, price });
+                updateCart();
+            });
+        });
+
+        cartBtn.addEventListener('click', () => {
+            cartModal.classList.remove('hidden');
+            cartModal.classList.add('flex');
+            setTimeout(() => cartModal.querySelector('.modal').classList.remove('scale-95'), 10);
+        });
+
+        closeCart.addEventListener('click', () => {
+            cartModal.querySelector('.modal').classList.add('scale-95');
+            setTimeout(() => cartModal.classList.add('hidden'), 300);
+            cartModal.classList.remove('flex');
+        });
+
+        cartItems.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-item')) {
+                const index = e.target.dataset.index;
+                cart.splice(index, 1);
+                updateCart();
+            }
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            products.forEach(product => {
+                const name = product.querySelector('h3').textContent.toLowerCase();
+                const desc = product.querySelector('p').textContent.toLowerCase();
+                product.style.display = (name.includes(searchTerm) || desc.includes(searchTerm)) ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
