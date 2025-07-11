@@ -40,19 +40,23 @@
 
     <div class="farms-list">
         <% for (let i = 0; i < campgrounds.length; i++) { let cg =
-        campgrounds[i]; let isEven = i % 2 === 0; %>
+        campgrounds[i]; let isEven = i % 2 === 0; let k = cg.images.length; let
+        imgIndex = k > 0 ? (i % k) : -1; // -1 means no images %>
         <div class="farm-card <%= isEven ? '' : 'reverse-row' %>">
             <div class="row">
                 <div class="col-md-5 image-container">
-                    <% if (cg.images[0]) { %>
+                    <% if (imgIndex !== -1) { %>
                     <img
-                        src="<%= cg.images[0].url %>"
+                        src="<%= cg.images[imgIndex].url %>"
                         class="farm-image"
                         alt="<%= cg.title %>"
                     />
                     <% } else { %>
-                    <img src="/images/hero/img1" />
-                    class="farm-image" alt="<%= cg.title %>" />
+                    <img
+                        src="/images/hero/img1"
+                        class="farm-image"
+                        alt="<%= cg.title %>"
+                    />
                     <% } %>
                 </div>
                 <div class="col-md-7">

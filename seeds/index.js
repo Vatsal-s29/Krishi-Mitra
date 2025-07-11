@@ -22,23 +22,43 @@ const seedDB = async () => {
         await Campground.deleteMany({}); //! Delete all existing campgrounds
 
         // seeding the db with 'count' campgrounds
-        const count = 20;
+        const count = 10;
 
         for (let index = 0; index < count; index++) {
-            const random1000 = Math.floor(Math.random() * 1000); // 0 to 999
+            const random20 = Math.floor(Math.random() * 20); // 0 to 19
 
             const camp = new Campground({
                 author: "67d188feea2619f2ce80db9f",
-                location: `${cities[random1000].city}, ${cities[random1000].state}`,
+                location: `${cities[random20].city}, ${cities[random20].state}`,
                 title: `${sample(descriptors)} ${sample(places)}`,
                 images: [
                     {
-                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744085916/YelpCamp/kio4nmafouy22jqfkhwp.png",
-                        filename: "YelpCamp/kio4nmafouy22jqfkhwp",
+                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744656421/YelpCamp/ax5lfko0ftratmtkhrrc.jpg",
+                        filename: "YelpCamp/g05x9hnr1vdp11vn9jpn",
                     },
                     {
-                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744085937/YelpCamp/czpp81wwktpt8wpktcqg.jpg",
-                        filename: "YelpCamp/czpp81wwktpt8wpktcqg",
+                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744680498/YelpCamp/dvoe5dafr0vbwc2wh66w.jpg",
+                        filename: "YelpCamp/dvoe5dafr0vbwc2wh66w",
+                    },
+                    {
+                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744680103/YelpCamp/g05x9hnr1vdp11vn9jpn.jpg",
+                        filename: "YelpCamp/dvoe5dafr0vbwc2wh66w",
+                    },
+                    {
+                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744680078/YelpCamp/ncbac3s2yfccomxrri5p.jpg",
+                        filename: "YelpCamp/dvoe5dafr0vbwc2wh66w",
+                    },
+                    {
+                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744680265/YelpCamp/gu2p3czbjh9fcge5eq9y.jpg",
+                        filename: "YelpCamp/dvoe5dafr0vbwc2wh66w",
+                    },
+                    {
+                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744680934/YelpCamp/zot8g9xbm8xvvfz4euzs.jpg",
+                        filename: "YelpCamp/dvoe5dafr0vbwc2wh66w",
+                    },
+                    {
+                        url: "https://res.cloudinary.com/dsun79dgf/image/upload/v1744680891/YelpCamp/ii2cosvvnnqutykzrdxf.jpg",
+                        filename: "YelpCamp/dvoe5dafr0vbwc2wh66w",
                     },
                 ],
                 description:

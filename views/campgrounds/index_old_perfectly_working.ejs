@@ -1,0 +1,75 @@
+<% layout('layouts/boilerplate') %>
+<!--note:  This will pass the below content as body into the boilerplate -->
+<link rel="stylesheet" href="/stylesheets/index.css" />
+
+<div class="farms-container">
+    <div class="header-section">
+        <h1
+            style="
+                font-family: 'Rouge Script', cursive;
+                color: #006400;
+                text-align: center;
+                font-size: 4em;
+                font-weight: 900;
+                font-style: normal;
+            "
+        >
+            Farmer's Market Directory
+        </h1>
+        <p class="subtitle">
+            Welcome to our Farmer's Market Directory — your go-to guide for
+            finding the best local markets around you! Explore a wide variety of
+            fresh, locally grown fruits and vegetables, homemade goods, and
+            artisanal products. Whether you're looking for organic produce,
+            handcrafted items, or just a vibrant community atmosphere, our
+            directory connects you directly with passionate farmers and small
+            businesses. Support your local economy while enjoying the freshest
+            ingredients straight from the source.
+        </p>
+        <a href="/campgrounds/new" class="register-btn">Register Your Farm</a>
+    </div>
+
+    <div id="map" style="overflow: hidden">
+        <iframe
+            src="https://www.google.com/maps/d/u/0/embed?mid=14OdZeuWFldGuDJqWNWwLucdQF828O6o&ehbc=2E312F&noprof=1"
+            width="100%"
+            height="115%"
+            style="position: relative; top: -60px"
+        ></iframe>
+    </div>
+
+    <div class="farms-list">
+        <% for (let i = 0; i < campgrounds.length; i++) { let cg =
+        campgrounds[i]; let isEven = i % 2 === 0; %>
+        <div class="farm-card <%= isEven ? '' : 'reverse-row' %>">
+            <div class="row">
+                <div class="col-md-5 image-container">
+                    <% if (cg.images[0]) { %>
+                    <img
+                        src="<%= cg.images[0].url %>"
+                        class="farm-image"
+                        alt="<%= cg.title %>"
+                    />
+                    <% } else { %>
+                    <img src="/images/hero/img1" />
+                    class="farm-image" alt="<%= cg.title %>" /> <% } %>
+                </div>
+                <div class="col-md-7">
+                    <div class="farm-details">
+                        <h2 class="farm-name"><%= cg.title %></h2>
+                        <div class="location">
+                            <i class="fa fa-map-marker"></i>
+                            <span><%= cg.location %></span>
+                        </div>
+                        <p class="description"><%= cg.description %></p>
+                        <a class="visit-btn" href="/campgrounds/<%= cg._id %>">
+                            Visit <%= cg.title %>
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>
